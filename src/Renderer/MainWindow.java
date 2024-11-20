@@ -3,6 +3,7 @@ package Renderer;
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -10,7 +11,7 @@ class MainWindow
 {
     private JFrame frame;
     private JPanel panel;
-    public MainWindow(int width, int height, BiConsumer<JFrame, JPanel> renderBiConsumer)
+    public MainWindow(int width, int height, Consumer<Graphics> renderConsumer)
     {
         frame = new JFrame("CHESS");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,7 +23,7 @@ class MainWindow
             public void paint(Graphics g)
             {
                 super.paint(g);
-                renderBiConsumer.accept(frame, panel);
+                renderConsumer.accept(g);
             }
         };
 

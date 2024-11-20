@@ -1,5 +1,6 @@
 package Renderer;
 
+import java.awt.image.ImageObserver;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
@@ -10,7 +11,17 @@ public class Renderer
 
     public Renderer()
     {
-        var x = new MainWindow(600,600, (a,b)->{});
+        var window = new MainWindow(600,600, (graphics)->
+        {
+            for(var r : renderables)
+                graphics.drawImage(r.renderableGetImage().getImage(),
+                        Math.round(r.renderableGetX()),
+                        Math.round(r.renderableGetY()),
+                        Math.round(r.renderableGetWidth()),
+                        Math.round(r.renderableGetHeight()),
+                        null);
+
+        });
     }
 
     public void addRenderable(Renderable... r)
