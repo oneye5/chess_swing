@@ -9,15 +9,13 @@ import java.util.function.Supplier;
 
 class MainWindow
 {
-    private JFrame frame;
-    private JPanel panel;
     public MainWindow(int width, int height, Consumer<Graphics> renderConsumer)
     {
-        frame = new JFrame("CHESS");
+        JFrame frame = new JFrame("MAIN WINDOW");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
 
-        panel = new JPanel()
+        JPanel panel = new JPanel()
         {
             @Override
             public void paint(Graphics g)
