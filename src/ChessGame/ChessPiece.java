@@ -14,4 +14,8 @@ public abstract class ChessPiece
     {
         return true;
     }
+    public Boolean hasMoved()
+    {
+        return false;
+    }
 }
