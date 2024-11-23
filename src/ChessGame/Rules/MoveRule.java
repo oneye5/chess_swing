@@ -6,15 +6,6 @@ import ChessGame.ChessPiece;
 public interface MoveRule
 {
     /**
-     * Determines if the rule is disjunctive or conjunctive.
-     *
-     * eg. valid moves are determined by doing the following
-     * (disjunctiveRule1 || disjunctiveRule2 ...) && conjunctiveRule1 && conjunctiveRule2...
-     * @return false indicating that the rule is conjunctive by default.
-     */
-    default Boolean isDisjunctiveRule(){return false;}
-
-    /**
      *
      * @param board Object containing current and previous board states.
      * @param piece The desired piece on the board to test a move.

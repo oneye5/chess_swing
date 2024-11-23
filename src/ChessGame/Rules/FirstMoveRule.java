@@ -10,13 +10,6 @@ public class FirstMoveRule implements MoveRule
     {
         this.rule = rule;
     }
-
-    @Override
-    public Boolean isDisjunctiveRule()
-    {
-        return true;
-    }
-
     @Override
     public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
     {

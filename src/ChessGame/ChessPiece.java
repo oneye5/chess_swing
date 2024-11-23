@@ -1,21 +1,18 @@
 package ChessGame;
 
-public abstract class ChessPiece
+import java.util.ArrayList;
+import java.util.List;
+
+public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece, boolean hasMoved)
 {
-    public Integer getX()
+    public List<Integer[]> getPossibleMoves(ChessBoard board)
     {
-        return 0;
-    }
-    public Integer getY()
-    {
-        return 0;
-    }
-    public Boolean isWhitePiece()
-    {
-        return true;
-    }
-    public Boolean hasMoved()
-    {
-        return false;
+        List<Integer[]> out = new ArrayList<>();
+        for (int x = 0; x < 8; x++)
+            for (int y = 0; y < 8; y++)
+                if(PieceType().getMoveRule().isValidMove(board, this, x, y))
+                    out.add(new Integer[]{x, y});
+
+        return out;
     }
 }
