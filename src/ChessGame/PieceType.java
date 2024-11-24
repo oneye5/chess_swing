@@ -11,13 +11,17 @@ public enum PieceType
             new AndRule(
                     new MoveUpOnlyRule(),
                     new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule(),
                     new OrRule(
                             new AndRule(
                                     new MoveVerticalRule(1),
                                     new CannotLandOnEnemyRule()),
                             new PawnTakeRule(),
                             new FirstMoveRule(
-                                    new MoveVerticalRule(2))))),
+                                    new AndRule(
+                                            new MoveVerticalRule(2),
+                                            new CannotLandOnEnemyRule()
+                                    ))))),
     KNIGHT(null),
     BISHOP(null),
     ROOK(null),

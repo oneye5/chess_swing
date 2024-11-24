@@ -12,6 +12,16 @@ public class DebugUtility
             System.out.println(move[1].toString());
         }
     }
+    public  static String toStringPositions(List<Integer[]> xy)
+    {
+        String out = "";
+        for (var move : xy)
+        {
+            out += move[0].toString() + ",";
+            out += move[1].toString() + "\n";
+        }
+        return out;
+    }
 
     public static Boolean possibleMovesContainPosition(List<Integer[]> xy, int x, int y)
     {
