@@ -22,11 +22,46 @@ public enum PieceType
                                             new MoveVerticalRule(2),
                                             new CannotLandOnEnemyRule()
                                     ))))),
-    KNIGHT(null),
-    BISHOP(null),
-    ROOK(null),
-    QUEEN(null),
-    KING(null);
+    KNIGHT(
+            new AndRule(
+                    new MoveKnightRule(),
+                    new CannotLandOnFriendlyRule()
+            )
+    ),
+    BISHOP(
+            new AndRule(
+                    new MoveDiagonalRule(8),
+                    new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule()
+            )
+    ),
+    ROOK(
+            new AndRule(
+            new CannotLandOnFriendlyRule(),
+            new LineOfSightRule(),
+            new OrRule(
+                    new MoveHorizontalRule(8),
+                    new MoveVerticalRule(8)
+            ))),
+    QUEEN(
+            new AndRule(
+            new CannotLandOnFriendlyRule(),
+            new LineOfSightRule(),
+            new OrRule(
+                    new MoveHorizontalRule(8),
+                    new MoveVerticalRule(8),
+                    new MoveDiagonalRule(8)
+            )
+    )),
+    KING(
+            new AndRule(
+                    new CannotLandOnFriendlyRule(),
+                    new OrRule(
+                            new MoveHorizontalRule(1),
+                            new MoveVerticalRule(1),
+                            new MoveDiagonalRule(1)
+                    )
+            ));
 
     private final MoveRule rootRule;
     public MoveRule getMoveRule() {return rootRule;}

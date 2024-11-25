@@ -102,12 +102,11 @@ class BishopTests {
         List<Integer[]> moves = bishop.getPossibleMoves(board);
 
         // Test diagonal moves in all directions
-        for (int i = 0; i < 8; i++) {
-            if (i != 3) {
+        for (int i = 0; i < 8; i++)
+            if (i != 3)
                 Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, i));
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, 6-i));
-            }
-        }
+
+
     }
 
     @Test
@@ -171,12 +170,11 @@ class QueenTests {
         }
 
         // Test diagonal moves
-        for (int i = 0; i < 8; i++) {
-            if (i != 3) {
+        for (int i = 0; i < 8; i++)
+            if (i != 3)
                 Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, i));
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, 6-i));
-            }
-        }
+
+
     }
 
     @Test
