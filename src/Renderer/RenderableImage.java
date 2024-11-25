@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 public enum RenderableImage
 {
+    darkTile    {public String getFileName(){return  "chap.png";}},
+    lightTile   {public String getFileName(){return  "chap.png";}},
     pawn        {public String getFileName(){return  "chap.png";}};
 
     public abstract String getFileName();

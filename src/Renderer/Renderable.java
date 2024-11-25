@@ -22,9 +22,9 @@ public abstract class Renderable implements Comparable<Renderable>
     @Override
     public int compareTo(Renderable other) { return Float.compare(this.renderableGetZ(), other.renderableGetZ()); }
 
-    Renderable()
+    protected Renderable()
     {
-
+        Renderer.INSTANCE.addRenderable(this);
     }
 
 }

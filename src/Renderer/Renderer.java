@@ -4,12 +4,13 @@ import java.awt.image.ImageObserver;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
-public class Renderer
+public enum Renderer
 {
+    INSTANCE;
     // holds a z sorted queue of renderables
     PriorityQueue<Renderable> renderables = new PriorityQueue<Renderable>();
 
-    public Renderer()
+    Renderer()
     {
         var window = new MainWindow(600,600, (graphics)->
         {
