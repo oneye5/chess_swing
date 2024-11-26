@@ -12,7 +12,7 @@ public class VisualChessBoard
     private List<Renderable> squares = new ArrayList<>();
     public VisualChessBoard()
     {
-        RenderableImage img = RenderableImage.lightTile;
+        RenderableImage img = RenderableImage.darkTile;
         for(int x = 0; x < 8; x++)
         {
             img = img == RenderableImage.lightTile ? RenderableImage.darkTile : RenderableImage.lightTile;
