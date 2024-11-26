@@ -10,9 +10,21 @@ import java.util.HashMap;
 
 public enum RenderableImage
 {
-    darkTile    {public String getFileName(){return  "darkTile.png";}},
-    lightTile   {public String getFileName(){return  "lightTile.png";}},
-    pawn        {public String getFileName(){return  "chap.png";}};
+    DARK_TILE    {public String getFileName()       {return  "darkTile.png";}},
+    LIGHT_TILE   {public String getFileName()       {return  "lightTile.png";}},
+
+    WHITE_PAWN        {public String getFileName()  {return  "w_Pawn.png";}},
+    BLACK_PAWN        {public String getFileName()  {return  "b_Pawn.png";}},
+    WHITE_BISHOP        {public String getFileName(){return  "w_Bishop.png";}},
+    BLACK_BISHOP        {public String getFileName(){return  "b_Bishop.png";}},
+    WHITE_ROOK        {public String getFileName()  {return  "w_Rook.png";}},
+    BLACK_ROOK        {public String getFileName()  {return  "b_Rook.png";}},
+    WHITE_KNIGHT        {public String getFileName(){return  "w_Knight.png";}},
+    BLACK_KNIGHT        {public String getFileName(){return  "b_Knight.png";}},
+    WHITE_QUEEN        {public String getFileName() {return  "w_Queen.png";}},
+    BLACK_QUEEN        {public String getFileName() {return  "b_Queen.png";}},
+    WHITE_KING        {public String getFileName()  {return  "w_King.png";}},
+    BLACK_KING        {public String getFileName()  {return  "b_King.png";}};
 
     public abstract String getFileName();
     public String getFilePath()
