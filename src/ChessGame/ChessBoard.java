@@ -59,9 +59,10 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
     public ChessBoard newBoardWithMove(Integer pieceX, Integer pieceY, Integer desiredX, Integer desiredY)
     {
         var newBoard = board.clone();
+        var piece = board[pieceX][pieceY];
         newBoard[pieceX][pieceY] = null;
-        newBoard[desiredX][desiredY] = board[pieceX][pieceY];
-        Boolean whitesTurn = ! newBoard[desiredX][desiredY].isWhitePiece();
+        newBoard[desiredX][desiredY] = new ChessPiece(piece.PieceType(), desiredX, desiredY, piece.isWhitePiece(), true);
+        Boolean whitesTurn = !newBoard[desiredX][desiredY].isWhitePiece();
         return new ChessBoard(newBoard,this,whitesTurn);
     }
 
