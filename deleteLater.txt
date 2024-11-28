@@ -1,0 +1,569 @@
+package ChessGame;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+* @param board 0,0 (a1) is bottom left, 7,7 (h8) is top right
+*
+*/
+public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
+{
+    public static ChessBoard newBoardWithPieces()
+    {
+        ChessPiece[][] board = new ChessPiece[8][8];
+        return new ChessBoard(board,null,true);
+    }
+    public static ChessBoard newBoardWithPieces(ChessPiece... pieces)
+    {
+        ChessPiece[][] board = new ChessPiece[8][8];
+        Arrays.stream(pieces).forEachOrdered(piece -> board[piece.x()][piece.y()] = piece);
+        return new ChessBoard(board,null, true);
+    }
+    public static ChessBoard newGame()
+    {
+        return newBoardWithPieces(newPiecesWithDefaultPosition());
+    }
+    public static ChessPiece[] newPiecesWithDefaultPosition() {
+        List<ChessPiece> pieces = new ArrayList<ChessPiece>();
+
+        // Set up pawns (ranks 2 and 7)
+        for (int x = 0; x < 8; x++) {  // Fixed: should be < 8, not < 7
+            pieces.add(new ChessPiece(PieceType.PAWN, x, 1, true, false));   // White pawns
+            pieces.add(new ChessPiece(PieceType.PAWN, x, 6, false, false));  // Black pawns
+        }
+
+        // White pieces (rank 1)
+        pieces.add(new ChessPiece(PieceType.ROOK,   0, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, 1, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, 2, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.QUEEN,  3, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.KING,   4, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, 5, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, 6, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.ROOK,   7, 0, true, false));
+
+        // Black pieces (rank 8 - appears as y=7 in zero-based coordinates)
+        pieces.add(new ChessPiece(PieceType.ROOK,   0, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, 1, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, 2, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.QUEEN,  3, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.KING,   4, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, 5, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, 6, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.ROOK,   7, 7, false, false));
+
+        return pieces.toArray(new ChessPiece[0]);
+    }
+    public ChessBoard newBoardWithMove(Integer pieceX, Integer pieceY, Integer desiredX, Integer desiredY)
+    {
+        var newBoard = board.clone();
+        var piece = board[pieceX][pieceY];
+        newBoard[pieceX][pieceY] = null;
+        newBoard[desiredX][desiredY] = new ChessPiece(piece.PieceType(), desiredX, desiredY, piece.isWhitePiece(), true);
+        Boolean whitesTurn = !newBoard[desiredX][desiredY].isWhitePiece();
+        return new ChessBoard(newBoard,this,whitesTurn);
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int x = 7; x >= 0; x--)
+        {
+            sb.append("\n");
+            for (int y = 0; y < 8; y++)
+                if (board[y][x] != null)
+                    sb.append(board[y][x].PieceType().toString().charAt(0));
+                else
+                    sb.append("_");
+        }
+        return sb.toString();
+    }
+}
+package ChessGame;
+
+public class ChessGame
+{
+    private ChessBoard board;
+    private ChessPiece selectedPiece = null;
+
+    public ChessGame()
+    {
+        board = ChessBoard.newGame();
+    }
+
+    public ChessBoard getBoard() {return board;}
+
+    public void selectPiece(int x, int y)
+    {
+        if(board.board()[x][y] == null)
+        {
+            selectedPiece = null;
+            return;
+        }
+
+        if(selectedPiece != null && selectedPiece.getPossibleMoves(board).contains(new Integer[]{x, y}))
+            return;
+
+
+        if (board.board()[x][y].isWhitePiece() == board.WhitesTurn())
+            selectedPiece = board.board()[x][y];
+        else
+            selectedPiece = null;
+    }
+
+    public void selectPiece(ChessPiece piece)
+    {
+        if (piece.isWhitePiece() == board.WhitesTurn())
+            selectedPiece = piece;
+    }
+
+    public void moveSelectedPiece(int desiredX, int desiredY)
+    {
+        var possibleMoves = selectedPiece.getPossibleMoves(board);
+        if(!selectedPiece.PieceType().getMoveRule().isValidMove(board,selectedPiece,desiredX,desiredY)) //does not contain the desired move as a valid move
+        {
+            selectedPiece = null;
+            return;
+        }
+
+        board = board.newBoardWithMove(selectedPiece.x(), selectedPiece.y(), desiredX, desiredY);
+        selectedPiece = null;
+    }
+
+    public ChessPiece getSelectedPiece()
+    {
+        return selectedPiece;
+    }
+}
+package ChessGame;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece, boolean hasMoved)
+{
+    public List<Integer[]> getPossibleMoves(ChessBoard board)
+    {
+        List<Integer[]> out = new ArrayList<>();
+        for (int x = 0; x < 8; x++)
+            for (int y = 0; y < 8; y++)
+                if(PieceType().getMoveRule().isValidMove(board, this, x, y))
+                    out.add(new Integer[]{x, y});
+
+        return out;
+    }
+}
+
+package ChessGame;
+
+import ChessGame.Rules.*;
+
+import java.util.Arrays;
+import java.util.List;
+
+public enum PieceType
+{
+    PAWN(
+            new AndRule(
+                    new MoveUpOnlyRule(),
+                    new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule(),
+                    new OrRule(
+                            new AndRule(
+                                    new MoveVerticalRule(1),
+                                    new CannotLandOnEnemyRule()),
+                            new PawnTakeRule(),
+                            new FirstMoveRule(
+                                    new AndRule(
+                                            new MoveVerticalRule(2),
+                                            new CannotLandOnEnemyRule()
+                                    ))))),
+    KNIGHT(
+            new AndRule(
+                    new MoveKnightRule(),
+                    new CannotLandOnFriendlyRule()
+            )
+    ),
+    BISHOP(
+            new AndRule(
+                    new MoveDiagonalRule(8),
+                    new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule()
+            )
+    ),
+    ROOK(
+            new AndRule(
+            new CannotLandOnFriendlyRule(),
+            new LineOfSightRule(),
+            new OrRule(
+                    new MoveHorizontalRule(8),
+                    new MoveVerticalRule(8)
+            ))),
+    QUEEN(
+            new AndRule(
+            new CannotLandOnFriendlyRule(),
+            new LineOfSightRule(),
+            new OrRule(
+                    new MoveHorizontalRule(8),
+                    new MoveVerticalRule(8),
+                    new MoveDiagonalRule(8)
+            )
+    )),
+    KING(
+            new AndRule(
+                    new CannotLandOnFriendlyRule(),
+                    new OrRule(
+                            new MoveHorizontalRule(1),
+                            new MoveVerticalRule(1),
+                            new MoveDiagonalRule(1)
+                    )
+            ));
+
+    private final MoveRule rootRule;
+    public MoveRule getMoveRule() {return rootRule;}
+
+    PieceType(MoveRule rootRule)
+    {
+        this.rootRule = rootRule;
+    }
+}
+
+package Controller;
+
+import ChessGame.ChessGame;
+import Renderer.Renderer;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class GameController
+{
+    ChessGame game;
+
+    public GameController()
+    {
+        game = new ChessGame();
+        updateVisuals();
+    }
+
+    public void updateVisuals()
+    {
+        Renderer.INSTANCE.clearRenderables();
+        new VisualChessBoard();
+        new VisualChessPieces(game.getBoard());
+    }
+
+    public void tick()
+    {
+
+    }
+
+    public void actionTile(Integer x, Integer y)
+    {
+        System.out.println(x.toString() + " " + y.toString());
+    }
+}
+
+
+package Controller;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessGame;
+import Renderer.*;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        var controller = new GameController();
+        while(true){controller.tick();}
+    }
+}
+
+
+package Controller;
+
+import Renderer.Renderable;
+import Renderer.RenderableImage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VisualChessBoard
+{
+    private Float squareSize = 40.0f;
+    private List<Renderable> squares = new ArrayList<>();
+    public VisualChessBoard()
+    {
+        RenderableImage img = RenderableImage.DARK_TILE;
+        for(int x = 0; x < 8; x++)
+        {
+            img = img == RenderableImage.LIGHT_TILE ? RenderableImage.DARK_TILE : RenderableImage.LIGHT_TILE;
+            for (int y = 0; y < 8; y++)
+            {
+                int finalX = x * squareSize.intValue();
+                int finalY = y * squareSize.intValue();
+                RenderableImage finalImg = img;
+                squares.add(
+                        new Renderable()
+                        {
+                            @Override public float renderableGetWidth() {return squareSize;}
+
+                            @Override public float renderableGetHeight() {return squareSize;}
+
+                            @Override public float renderableGetX() {return finalX;}
+
+                            @Override public float renderableGetY() {return finalY;}
+
+                            @Override public float renderableGetZ() {return -1;}
+
+                            @Override public RenderableImage renderableGetImage() {return finalImg;}
+                        }
+                );
+                img = img == RenderableImage.LIGHT_TILE ? RenderableImage.DARK_TILE : RenderableImage.LIGHT_TILE;
+            }
+        }
+    }
+
+}
+
+package Controller;
+
+import ChessGame.ChessBoard;
+import ChessGame.PieceType;
+import Renderer.Renderable;
+import Renderer.RenderableImage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+
+
+public class VisualChessPieces
+{
+    private float squareSize = 40.0f;
+    List<Renderable> pieces = new ArrayList<>();
+
+    public VisualChessPieces(ChessBoard board)
+    {
+        Arrays.stream(board.board()).flatMap(Arrays::stream).filter(Objects::nonNull).forEach(piece->
+        {
+            pieces.add(
+                    new Renderable() 
+                    {
+                        @Override public float renderableGetWidth() {return squareSize;}
+
+                        @Override public float renderableGetHeight() {return squareSize;}
+
+                        @Override public float renderableGetX() {return piece.x() * squareSize;}
+
+                        @Override public float renderableGetY() {return (7 - piece.y()) * squareSize;}
+                        
+                        @Override public float renderableGetZ() {return 0;}
+
+                        @Override
+                        public RenderableImage renderableGetImage()
+                        {
+                            switch (piece.PieceType())
+                            {
+                                case PAWN:
+                                    if (piece.isWhitePiece())
+                                        return RenderableImage.WHITE_PAWN;
+                                     else
+                                        return RenderableImage.BLACK_PAWN;
+
+                                case BISHOP:
+                                    if (piece.isWhitePiece())
+                                        return RenderableImage.WHITE_BISHOP;
+                                    else
+                                        return RenderableImage.BLACK_BISHOP;
+
+                                case ROOK:
+                                    if (piece.isWhitePiece())
+                                        return RenderableImage.WHITE_ROOK;
+                                    else
+                                        return RenderableImage.BLACK_ROOK;
+
+                                case KNIGHT:
+                                    if (piece.isWhitePiece())
+                                        return RenderableImage.WHITE_KNIGHT;
+                                    else
+                                        return RenderableImage.BLACK_KNIGHT;
+
+                                case QUEEN:
+                                    if (piece.isWhitePiece())
+                                        return RenderableImage.WHITE_QUEEN;
+                                    else
+                                        return RenderableImage.BLACK_QUEEN;
+
+                                case KING:
+                                    if (piece.isWhitePiece())
+                                        return RenderableImage.WHITE_KING;
+                                    else
+                                        return RenderableImage.BLACK_KING;
+
+                                default:
+                                    throw new IllegalArgumentException("Unknown piece type: " + piece.PieceType());
+                            }
+                        }
+                    }
+            );
+        });
+    }
+}
+package Renderer;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+class MainWindow
+{
+    public MainWindow(int width, int height, Consumer<Graphics> renderConsumer)
+    {
+        JFrame frame = new JFrame("MAIN WINDOW");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(width, height);
+
+        JPanel panel = new JPanel()
+        {
+            @Override
+            public void paint(Graphics g)
+            {
+                super.paint(g);
+                renderConsumer.accept(g);
+            }
+        };
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+}
+
+
+package Renderer;
+
+
+public abstract class Renderable implements Comparable<Renderable>
+{
+    // width and height of the image to be drawn
+    public abstract float renderableGetWidth();
+
+    public abstract float renderableGetHeight();
+
+    // x and y represent positions on screen, z represents what should be rendered on top
+    public abstract float renderableGetX();
+
+    public abstract float renderableGetY();
+
+    public abstract float renderableGetZ();
+
+    // returns the desired image to draw
+    public abstract RenderableImage renderableGetImage();
+
+    // for use in collections with z sorting
+    @Override
+    public int compareTo(Renderable other) { return Float.compare(this.renderableGetZ(), other.renderableGetZ()); }
+
+    protected Renderable()
+    {
+        Renderer.INSTANCE.addRenderable(this);
+    }
+
+}
+package Renderer;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+
+public enum RenderableImage
+{
+    DARK_TILE    {public String getFileName()       {return  "darkTile.png";}},
+    LIGHT_TILE   {public String getFileName()       {return  "lightTile.png";}},
+
+    WHITE_PAWN        {public String getFileName()  {return  "w_Pawn.png";}},
+    BLACK_PAWN        {public String getFileName()  {return  "b_Pawn.png";}},
+    WHITE_BISHOP        {public String getFileName(){return  "w_Bishop.png";}},
+    BLACK_BISHOP        {public String getFileName(){return  "b_Bishop.png";}},
+    WHITE_ROOK        {public String getFileName()  {return  "w_Rook.png";}},
+    BLACK_ROOK        {public String getFileName()  {return  "b_Rook.png";}},
+    WHITE_KNIGHT        {public String getFileName(){return  "w_Knight.png";}},
+    BLACK_KNIGHT        {public String getFileName(){return  "b_Knight.png";}},
+    WHITE_QUEEN        {public String getFileName() {return  "w_Queen.png";}},
+    BLACK_QUEEN        {public String getFileName() {return  "b_Queen.png";}},
+    WHITE_KING        {public String getFileName()  {return  "w_King.png";}},
+    BLACK_KING        {public String getFileName()  {return  "b_King.png";}};
+
+    public abstract String getFileName();
+    public String getFilePath()
+    {
+        var projectPath = Paths.get("").toAbsolutePath().normalize() + "/assets/";
+        return projectPath + getFileName();
+    }
+
+    HashMap<String,Image> imageCache = new HashMap<>();
+    public Image getImage()
+    {
+        return imageCache.computeIfAbsent(getFilePath(),(path)->
+        {
+            try { return ImageIO.read(new File(getFilePath())); }
+            catch(IOException e) { throw new RuntimeException(e); }
+        });
+    }
+}
+package Renderer;
+
+import java.awt.image.ImageObserver;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+
+public enum Renderer
+{
+    INSTANCE;
+    // holds a z sorted queue of renderables
+    PriorityQueue<Renderable> renderables = new PriorityQueue<Renderable>();
+
+    Renderer()
+    {
+        var window = new MainWindow(600,600, (graphics)->
+        {
+            for(var r : renderables)
+                graphics.drawImage(r.renderableGetImage().getImage(),
+                        Math.round(r.renderableGetX()),
+                        Math.round(r.renderableGetY()),
+                        Math.round(r.renderableGetWidth()),
+                        Math.round(r.renderableGetHeight()),
+                        null);
+
+        });
+    }
+
+    public void addRenderable(Renderable... r)
+    {
+        renderables.addAll(Arrays.stream(r).toList());
+    }
+
+    public void removeRenderable(Renderable... r)
+    {
+        renderables.removeAll(Arrays.stream(r).toList());
+    }
+
+    public void clearRenderables() {renderables.clear();}
+}
+
+
+
+

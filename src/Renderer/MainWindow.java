@@ -9,13 +9,14 @@ import java.util.function.Supplier;
 
 class MainWindow
 {
+    private final JPanel panel;
     public MainWindow(int width, int height, Consumer<Graphics> renderConsumer)
     {
         JFrame frame = new JFrame("MAIN WINDOW");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
 
-        JPanel panel = new JPanel()
+        panel = new JPanel()
         {
             @Override
             public void paint(Graphics g)
@@ -28,4 +29,6 @@ class MainWindow
         frame.add(panel);
         frame.setVisible(true);
     }
+
+    public JPanel getPanel() {return panel;}
 }

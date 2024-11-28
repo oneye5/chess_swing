@@ -38,6 +38,9 @@ public class ChessGame
 
     public void moveSelectedPiece(int desiredX, int desiredY)
     {
+        if (selectedPiece == null)
+            return;
+
         var possibleMoves = selectedPiece.getPossibleMoves(board);
         if(!selectedPiece.PieceType().getMoveRule().isValidMove(board,selectedPiece,desiredX,desiredY)) //does not contain the desired move as a valid move
         {

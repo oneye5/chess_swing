@@ -1,5 +1,9 @@
 package Renderer;
 
+import Controller.Main;
+
+import java.awt.*;
+import java.awt.event.MouseListener;
 import java.awt.image.ImageObserver;
 import java.util.Arrays;
 import java.util.PriorityQueue;
@@ -9,10 +13,10 @@ public enum Renderer
     INSTANCE;
     // holds a z sorted queue of renderables
     PriorityQueue<Renderable> renderables = new PriorityQueue<Renderable>();
-
+    final MainWindow mainWindow;
     Renderer()
     {
-        var window = new MainWindow(600,600, (graphics)->
+        mainWindow = new MainWindow(600,600, (graphics)->
         {
             for(var r : renderables)
                 graphics.drawImage(r.renderableGetImage().getImage(),
@@ -36,4 +40,15 @@ public enum Renderer
     }
 
     public void clearRenderables() {renderables.clear();}
+
+    public void addMouseListener(MouseListener listener)
+    {
+        mainWindow.getPanel().addMouseListener(listener);
+    }
+
+    public void repaint()
+    {
+        mainWindow.getPanel().repaint();
+    }
+
 }

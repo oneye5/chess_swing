@@ -24,7 +24,8 @@ public enum RenderableImage
     WHITE_QUEEN        {public String getFileName() {return  "w_Queen.png";}},
     BLACK_QUEEN        {public String getFileName() {return  "b_Queen.png";}},
     WHITE_KING        {public String getFileName()  {return  "w_King.png";}},
-    BLACK_KING        {public String getFileName()  {return  "b_King.png";}};
+    BLACK_KING        {public String getFileName()  {return  "b_King.png";}},
+    BOARD_MARKER        {public String getFileName()  {return  "marker.png";}};
 
     public abstract String getFileName();
     public String getFilePath()

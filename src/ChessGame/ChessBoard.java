@@ -10,6 +10,24 @@ import java.util.List;
 */
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
+    public Boolean isInCheck(Boolean isWhite) // if is white is true it returns if white is in check
+    {
+        ChessPiece king = Arrays.stream(board())
+                .flatMap(Arrays::stream)
+                        .filter(x->x.PieceType().equals(PieceType.KING))
+                                .filter(x -> x.isWhitePiece() == isWhite)
+                                        .toList()
+                                                .getFirst();
+        // check if any pieces may take the king
+        return !Arrays.stream(board()) // stream of arrays of pieces
+                .flatMap(Arrays::stream) // map to a stream of pieces
+                .filter(piece -> piece.isWhitePiece() != isWhite) // filter out same pieces
+                .filter(piece -> !piece.getPossibleMoves(this) // filter out pieces that cannot take the king in their position
+                        .stream() // stream of positions represented as integer arrays of size 2
+                        .filter(position -> position[0] == king.x() && position[1] == king.y()).toList().isEmpty()
+                ).toList().isEmpty();
+    }
+
     public static ChessBoard newBoardWithPieces()
     {
         ChessPiece[][] board = new ChessPiece[8][8];
