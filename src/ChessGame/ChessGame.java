@@ -2,11 +2,13 @@ package ChessGame;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class ChessGame
 {
     private ChessBoard board;
     private ChessPiece selectedPiece = null;
+    private Consumer<Boolean> onWIn;
 
     public ChessGame()
     {

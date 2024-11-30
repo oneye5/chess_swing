@@ -1,11 +1,15 @@
 package Renderer;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
+
+/**
+ * MainWindow,
+ * provides abstraction for creating a window for rendering to by the 'Renderer'
+ *
+ * @see Renderer
+ * @author Owan Lazic
+ */
 
 class MainWindow
 {

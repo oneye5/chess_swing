@@ -1,22 +1,29 @@
 package Renderer;
 
-import Controller.Main;
-
-import java.awt.*;
 import java.awt.event.MouseListener;
-import java.awt.image.ImageObserver;
 import java.util.Arrays;
 import java.util.PriorityQueue;
+
+/**
+ * Renderer,
+ * this class is a singleton that is responsible for the rendering and management of 'Renderables' as well as construction of the 'MainWindow'
+ *
+ * @see Renderable
+ * @see MainWindow
+ * @author Owan Lazic
+ */
 
 public enum Renderer
 {
     INSTANCE;
-    // holds a z sorted queue of renderables
+
+    // Renderables sorted by z-position, smallest to biggest
     PriorityQueue<Renderable> renderables = new PriorityQueue<Renderable>();
     final MainWindow mainWindow;
+
     Renderer()
     {
-        mainWindow = new MainWindow(600,600, (graphics)->
+        mainWindow = new MainWindow(600,600, graphics ->
         {
             for(var r : renderables)
                 graphics.drawImage(r.renderableGetImage().getImage(),
@@ -29,26 +36,13 @@ public enum Renderer
         });
     }
 
-    public void addRenderable(Renderable... r)
-    {
-        renderables.addAll(Arrays.stream(r).toList());
-    }
+    public void addRenderable(Renderable... r) {renderables.addAll(Arrays.stream(r).toList());}
 
-    public void removeRenderable(Renderable... r)
-    {
-        renderables.removeAll(Arrays.stream(r).toList());
-    }
+    public void removeRenderable(Renderable... r) {renderables.removeAll(Arrays.stream(r).toList());}
 
     public void clearRenderables() {renderables.clear();}
 
-    public void addMouseListener(MouseListener listener)
-    {
-        mainWindow.getPanel().addMouseListener(listener);
-    }
+    public void addMouseListener(MouseListener listener) {mainWindow.getPanel().addMouseListener(listener);}
 
-    public void repaint()
-    {
-        mainWindow.getPanel().repaint();
-    }
-
+    public void repaint() {mainWindow.getPanel().repaint();}
 }
