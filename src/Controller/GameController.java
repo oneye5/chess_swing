@@ -56,7 +56,6 @@ public class GameController implements MouseListener
     {
        game.moveSelectedPiece(x, y);
        game.selectPiece(x, y);
-       var newMove = game.getBoard().newBoardWithMove(0,1,0,2);
        updateVisuals();
     }
 }
