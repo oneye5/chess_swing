@@ -1,8 +1,272 @@
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+import java.util.List;
+
+public class AndRule implements MoveRule
+{
+    List<MoveRule> rules;
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return rules.stream().allMatch(rule -> rule.isValidMove(board, piece, toX, toY));
+    }
+
+    public AndRule(MoveRule... rules)
+    {
+        this.rules = List.of(rules);
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class CannotLandOnEnemyRule implements MoveRule
+{
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return board.board()[toX][toY] == null || board.board()[toX][toY].isWhitePiece() == piece.isWhitePiece();
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class CannotLandOnFriendlyRule implements MoveRule
+{
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return board.board()[toX][toY] == null || board.board()[toX][toY].isWhitePiece() != piece.isWhitePiece();
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class CheckRule implements MoveRule
+{
+
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        if(!board.isInCheck(piece.isWhitePiece()))
+            return true;
+
+        //var newBoard = board.newBoardWithMove(piece.x(),piece.y(),toX,toY,true);
+        //return !newBoard.isInCheck(piece.isWhitePiece());
+        return  false;
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class FirstMoveRule implements MoveRule
+{
+    MoveRule rule;
+    public FirstMoveRule(MoveRule rule)
+    {
+        this.rule = rule;
+    }
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return !piece.hasMoved() && rule.isValidMove(board, piece, toX, toY);
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class LineOfSightRule implements MoveRule {
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY) {
+        int deltaX = toX - piece.x(); // Fixed: Corrected delta calculation
+        int deltaY = toY - piece.y();
+
+        // Skip if there's no movement
+        if (deltaX == 0 && deltaY == 0) {
+            return false;
+        }
+
+        // Calculate the direction of movement
+        int xSign = Integer.compare(deltaX, 0);
+        int ySign = Integer.compare(deltaY, 0);
+
+        // Calculate the number of steps to check
+        int steps = Math.max(Math.abs(deltaX), Math.abs(deltaY));
+
+        // Check if movement is diagonal, horizontal, or vertical
+        if (Math.abs(deltaX) != Math.abs(deltaY) && deltaX != 0 && deltaY != 0) {
+            return false;
+        }
+
+        // Check each square along the path
+        for (int i = 1; i < steps; i++) {
+            int x = piece.x() + (xSign * i);
+            int y = piece.y() + (ySign * i);
+
+            if (board.board()[x][y] != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class MoveDiagonalRule implements MoveRule
+{
+    private final Integer numSquares;
+    public MoveDiagonalRule(Integer numSquares)
+    {
+        this.numSquares = numSquares;
+    }
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return Math.abs(piece.x() - toX) == Math.abs(piece.y() - toY)
+                && Math.abs(piece.x() - toX) <= numSquares;
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class MoveHorizontalRule implements MoveRule
+{
+    Integer maxNumberOfSquares; // -1 for infinite
+    public MoveHorizontalRule(Integer maxNumberOfSquares) {this.maxNumberOfSquares = maxNumberOfSquares;}
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+       return toY == piece.y() && Math.abs(toX - piece.x()) <= maxNumberOfSquares;
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class MoveKnightRule implements MoveRule
+{
+
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        int fromX = piece.x();
+        int fromY = piece.y();
+
+        // Calculate the horizontal and vertical move distances
+        int dx = Math.abs(fromX - toX);
+        int dy = Math.abs(fromY - toY);
+
+        // Check the L-shape move (two squares in one direction and one square in the other direction)
+        return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public interface MoveRule
+{
+    /**
+     *
+     * @param board Object containing current and previous board states.
+     * @param piece The desired piece on the board to test a move.
+     * @param toX   Desired X position on the board to test if the desired piece can move to it.
+     * @param toY   Desired X position on the board to test if the desired piece can move to it.
+     * @return returns if it is a valid move or not.
+     */
+    Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY);
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class MoveUpOnlyRule implements MoveRule
+{
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return piece.isWhitePiece() ? toY > piece.y() : toY < piece.y();
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class MoveVerticalRule implements MoveRule
+{
+    Integer maxNumberOfSquares; // -1 for infinite
+    public MoveVerticalRule(Integer maxNumberOfSquares) {this.maxNumberOfSquares = maxNumberOfSquares;}
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+       return toX == piece.x() && Math.abs(toY - piece.y()) <= maxNumberOfSquares;
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+import java.util.List;
+
+public class OrRule implements MoveRule
+{
+    List<MoveRule> rules;
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return rules.stream().anyMatch(rule -> rule.isValidMove(board, piece, toX, toY));
+    }
+
+    public OrRule(MoveRule... rules)
+    {
+        this.rules = List.of(rules);
+    }
+}
+package ChessGame.Rules;
+
+import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
+
+public class PawnTakeRule implements MoveRule
+{
+    @Override
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    {
+        return board.board()[toX][toY] != null
+                && Math.abs(piece.x() - toX) == 1
+                && Math.abs(piece.y() - toY) == 1
+                && board.board()[toX][toY].isWhitePiece() != piece.isWhitePiece();
+    }
+
+}
 package ChessGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
 * @param board 0,0 (a1) is bottom left, 7,7 (h8) is top right
@@ -10,6 +274,27 @@ import java.util.List;
 */
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
+    public Boolean isInCheck(Boolean isWhite) // if is white is true it returns if white is in check
+    {
+        ChessPiece king = Arrays.stream(board())
+                .flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
+                .filter(x->x.PieceType().equals(PieceType.KING))
+                .filter(x -> x.isWhitePiece() == isWhite)
+                .toList()
+                .getFirst();
+
+        // check if any pieces may take the king
+        return !Arrays.stream(board()) // stream of arrays of pieces
+                .flatMap(Arrays::stream) // map to a stream of pieces
+                .filter(Objects::nonNull)
+                .filter(piece -> piece.isWhitePiece() != isWhite) // filter out same pieces
+                .filter(piece -> !piece.getPossibleMoves(this) // filter out pieces that cannot take the king in their position
+                        .stream() // stream of positions represented as integer arrays of size 2
+                        .filter(position -> position[0] == king.x() && position[1] == king.y()).toList().isEmpty()
+                ).toList().isEmpty();
+    }
+
     public static ChessBoard newBoardWithPieces()
     {
         ChessPiece[][] board = new ChessPiece[8][8];
@@ -122,6 +407,9 @@ public class ChessGame
 
     public void moveSelectedPiece(int desiredX, int desiredY)
     {
+        if (selectedPiece == null)
+            return;
+
         var possibleMoves = selectedPiece.getPossibleMoves(board);
         if(!selectedPiece.PieceType().getMoveRule().isValidMove(board,selectedPiece,desiredX,desiredY)) //does not contain the desired move as a valid move
         {
@@ -138,6 +426,7 @@ public class ChessGame
         return selectedPiece;
     }
 }
+
 package ChessGame;
 
 import java.util.ArrayList;
@@ -156,7 +445,6 @@ public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece
         return out;
     }
 }
-
 package ChessGame;
 
 import ChessGame.Rules.*;
@@ -168,6 +456,7 @@ public enum PieceType
 {
     PAWN(
             new AndRule(
+                    new CheckRule(),
                     new MoveUpOnlyRule(),
                     new CannotLandOnFriendlyRule(),
                     new LineOfSightRule(),
@@ -183,12 +472,14 @@ public enum PieceType
                                     ))))),
     KNIGHT(
             new AndRule(
+                    new CheckRule(),
                     new MoveKnightRule(),
                     new CannotLandOnFriendlyRule()
             )
     ),
     BISHOP(
             new AndRule(
+                    new CheckRule(),
                     new MoveDiagonalRule(8),
                     new CannotLandOnFriendlyRule(),
                     new LineOfSightRule()
@@ -196,24 +487,27 @@ public enum PieceType
     ),
     ROOK(
             new AndRule(
-            new CannotLandOnFriendlyRule(),
-            new LineOfSightRule(),
-            new OrRule(
-                    new MoveHorizontalRule(8),
-                    new MoveVerticalRule(8)
+                    new CheckRule(),
+                    new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule(),
+                    new OrRule(
+                        new MoveHorizontalRule(8),
+                        new MoveVerticalRule(8)
             ))),
     QUEEN(
             new AndRule(
-            new CannotLandOnFriendlyRule(),
-            new LineOfSightRule(),
-            new OrRule(
-                    new MoveHorizontalRule(8),
-                    new MoveVerticalRule(8),
-                    new MoveDiagonalRule(8)
+                    new CannotLandOnFriendlyRule(),
+                    new CheckRule(),
+                    new LineOfSightRule(),
+                    new OrRule(
+                            new MoveHorizontalRule(8),
+                            new MoveVerticalRule(8),
+                            new MoveDiagonalRule(8)
             )
     )),
     KING(
             new AndRule(
+                    new CheckRule(),
                     new CannotLandOnFriendlyRule(),
                     new OrRule(
                             new MoveHorizontalRule(1),
@@ -230,45 +524,68 @@ public enum PieceType
         this.rootRule = rootRule;
     }
 }
-
 package Controller;
 
-import ChessGame.ChessGame;
-import Renderer.Renderer;
+import ChessGame.*;
+import Renderer.*;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class GameController
+public class GameController implements MouseListener
 {
-    ChessGame game;
+    private ChessGame game;
+    private float squareSize = 40.0f;  // Match the square size from VisualChessBoard
 
     public GameController()
     {
         game = new ChessGame();
         updateVisuals();
+
+        // Add the mouse listener to the renderer's main window
+        // Note: You'll need to modify MainWindow to expose a way to add a mouse listener
+        Renderer.INSTANCE.addMouseListener(this);
     }
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        // Convert screen coordinates to tile coordinates
+        int tileX = (int)(e.getX() / squareSize);
+        int tileY = 7 - (int)(e.getY() / squareSize);  // Invert Y to match chess board coordinates
+
+        // Ensure the click is within the chess board
+        if (tileX >= 0 && tileX < 8 && tileY >= 0 && tileY < 8)
+            actionTile(tileX, tileY);
+    }
+
+    // Implement other MouseListener methods as no-ops
+    @Override public void mousePressed(MouseEvent e) {}
+    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) {}
+    @Override public void mouseExited(MouseEvent e) {}
 
     public void updateVisuals()
     {
         Renderer.INSTANCE.clearRenderables();
         new VisualChessBoard();
         new VisualChessPieces(game.getBoard());
+        new VisualAvailableMoves(game);
     }
 
     public void tick()
     {
-
+        Renderer.INSTANCE.repaint();
     }
 
     public void actionTile(Integer x, Integer y)
     {
-        System.out.println(x.toString() + " " + y.toString());
+       game.moveSelectedPiece(x, y);
+       game.selectPiece(x, y);
+
+       updateVisuals();
     }
-}
-
-
-package Controller;
+}package Controller;
 
 import ChessGame.ChessBoard;
 import ChessGame.ChessGame;
@@ -281,9 +598,41 @@ public class Main
         var controller = new GameController();
         while(true){controller.tick();}
     }
+}package Controller;
+
+import ChessGame.*;
+import Renderer.*;
+
+public class VisualAvailableMoves
+{
+    VisualAvailableMoves(ChessGame g)
+    {
+        if(g.getSelectedPiece() == null)
+            return;
+
+        var moves = g.getSelectedPiece().getPossibleMoves(g.getBoard());
+
+        for (var move : moves)
+        {
+            Renderer.INSTANCE.addRenderable(
+                    new Renderable()
+                    {
+                        @Override public float renderableGetWidth() {return 40.0f;}
+
+                        @Override public float renderableGetHeight() {return 40.0f;}
+
+                        @Override public float renderableGetX() {return move[0] * 40.0f;}
+
+                        @Override public float renderableGetY() {return (7-move[1]) * 40.0f;}
+
+                        @Override public float renderableGetZ() {return 2.0f;}
+
+                        @Override public RenderableImage renderableGetImage() {return RenderableImage.BOARD_MARKER;}
+                    }
+            );
+        }
+    }
 }
-
-
 package Controller;
 
 import Renderer.Renderable;
@@ -329,7 +678,6 @@ public class VisualChessBoard
     }
 
 }
-
 package Controller;
 
 import ChessGame.ChessBoard;
@@ -427,13 +775,14 @@ import java.util.function.Supplier;
 
 class MainWindow
 {
+    private final JPanel panel;
     public MainWindow(int width, int height, Consumer<Graphics> renderConsumer)
     {
         JFrame frame = new JFrame("MAIN WINDOW");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
 
-        JPanel panel = new JPanel()
+        panel = new JPanel()
         {
             @Override
             public void paint(Graphics g)
@@ -446,9 +795,9 @@ class MainWindow
         frame.add(panel);
         frame.setVisible(true);
     }
+
+    public JPanel getPanel() {return panel;}
 }
-
-
 package Renderer;
 
 
@@ -505,7 +854,8 @@ public enum RenderableImage
     WHITE_QUEEN        {public String getFileName() {return  "w_Queen.png";}},
     BLACK_QUEEN        {public String getFileName() {return  "b_Queen.png";}},
     WHITE_KING        {public String getFileName()  {return  "w_King.png";}},
-    BLACK_KING        {public String getFileName()  {return  "b_King.png";}};
+    BLACK_KING        {public String getFileName()  {return  "b_King.png";}},
+    BOARD_MARKER        {public String getFileName()  {return  "marker.png";}};
 
     public abstract String getFileName();
     public String getFilePath()
@@ -526,6 +876,10 @@ public enum RenderableImage
 }
 package Renderer;
 
+import Controller.Main;
+
+import java.awt.*;
+import java.awt.event.MouseListener;
 import java.awt.image.ImageObserver;
 import java.util.Arrays;
 import java.util.PriorityQueue;
@@ -535,10 +889,10 @@ public enum Renderer
     INSTANCE;
     // holds a z sorted queue of renderables
     PriorityQueue<Renderable> renderables = new PriorityQueue<Renderable>();
-
+    final MainWindow mainWindow;
     Renderer()
     {
-        var window = new MainWindow(600,600, (graphics)->
+        mainWindow = new MainWindow(600,600, (graphics)->
         {
             for(var r : renderables)
                 graphics.drawImage(r.renderableGetImage().getImage(),
@@ -562,8 +916,15 @@ public enum Renderer
     }
 
     public void clearRenderables() {renderables.clear();}
+
+    public void addMouseListener(MouseListener listener)
+    {
+        mainWindow.getPanel().addMouseListener(listener);
+    }
+
+    public void repaint()
+    {
+        mainWindow.getPanel().repaint();
+    }
+
 }
-
-
-
-

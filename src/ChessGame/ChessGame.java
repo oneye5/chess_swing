@@ -41,7 +41,7 @@ public class ChessGame
         if (selectedPiece == null)
             return;
 
-        var possibleMoves = selectedPiece.getPossibleMoves(board);
+        //var possibleMoves = selectedPiece.getPossibleMoves(board);
         if(!selectedPiece.PieceType().getMoveRule().isValidMove(board,selectedPiece,desiredX,desiredY)) //does not contain the desired move as a valid move
         {
             selectedPiece = null;
@@ -50,6 +50,8 @@ public class ChessGame
 
         board = board.newBoardWithMove(selectedPiece.x(), selectedPiece.y(), desiredX, desiredY);
         selectedPiece = null;
+
+        System.out.println("ChessGame.MoveSelectedPiece()\n"+ this.board.toString());
     }
 
     public ChessPiece getSelectedPiece()

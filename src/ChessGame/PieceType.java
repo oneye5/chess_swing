@@ -21,37 +21,47 @@ public enum PieceType
                                     new AndRule(
                                             new MoveVerticalRule(2),
                                             new CannotLandOnEnemyRule()
-                                    ))))),
+                                    ))),
+                    new CheckRule()
+            )
+    ),
     KNIGHT(
             new AndRule(
                     new MoveKnightRule(),
-                    new CannotLandOnFriendlyRule()
+                    new CannotLandOnFriendlyRule(),
+                    new CheckRule()
             )
     ),
     BISHOP(
             new AndRule(
+
                     new MoveDiagonalRule(8),
                     new CannotLandOnFriendlyRule(),
-                    new LineOfSightRule()
+                    new LineOfSightRule(),
+                    new CheckRule()
             )
     ),
     ROOK(
             new AndRule(
-            new CannotLandOnFriendlyRule(),
-            new LineOfSightRule(),
-            new OrRule(
-                    new MoveHorizontalRule(8),
-                    new MoveVerticalRule(8)
-            ))),
+                    new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule(),
+                    new OrRule(
+                        new MoveHorizontalRule(8),
+                        new MoveVerticalRule(8)
+                    ),
+                    new CheckRule()
+            )
+    ),
     QUEEN(
             new AndRule(
-            new CannotLandOnFriendlyRule(),
-            new LineOfSightRule(),
-            new OrRule(
-                    new MoveHorizontalRule(8),
-                    new MoveVerticalRule(8),
-                    new MoveDiagonalRule(8)
-            )
+                    new CannotLandOnFriendlyRule(),
+                    new LineOfSightRule(),
+                    new OrRule(
+                            new MoveHorizontalRule(8),
+                            new MoveVerticalRule(8),
+                            new MoveDiagonalRule(8)
+            ),
+                    new CheckRule()
     )),
     KING(
             new AndRule(
@@ -60,7 +70,8 @@ public enum PieceType
                             new MoveHorizontalRule(1),
                             new MoveVerticalRule(1),
                             new MoveDiagonalRule(1)
-                    )
+                    ),
+                    new CheckRule()
             ));
 
     private final MoveRule rootRule;

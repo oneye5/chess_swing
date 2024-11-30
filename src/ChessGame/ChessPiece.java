@@ -15,4 +15,8 @@ public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece
 
         return out;
     }
+    public ChessPiece deepClone()
+    {
+        return new ChessPiece(PieceType, x, y, isWhitePiece, hasMoved);
+    }
 }

@@ -1,38 +1,60 @@
 package ChessGame;
 
+import ChessGame.Rules.CheckRule;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import ChessGame.Rules.*;
 /**
 * @param board 0,0 (a1) is bottom left, 7,7 (h8) is top right
 *
 */
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
-    public Boolean isInCheck(Boolean isWhite) // if is white is true it returns if white is in check
-    {
-        ChessPiece king = Arrays.stream(board())
+    public boolean isInCheck(Boolean isWhite) {
+        // Find the king's position
+        ChessPiece king = findKing(isWhite);
+
+        // Check if any opponent pieces can attack the king's position
+        return Arrays.stream(board())
                 .flatMap(Arrays::stream)
-                        .filter(x->x.PieceType().equals(PieceType.KING))
-                                .filter(x -> x.isWhitePiece() == isWhite)
-                                        .toList()
-                                                .getFirst();
-        // check if any pieces may take the king
-        return !Arrays.stream(board()) // stream of arrays of pieces
-                .flatMap(Arrays::stream) // map to a stream of pieces
-                .filter(piece -> piece.isWhitePiece() != isWhite) // filter out same pieces
-                .filter(piece -> !piece.getPossibleMoves(this) // filter out pieces that cannot take the king in their position
-                        .stream() // stream of positions represented as integer arrays of size 2
-                        .filter(position -> position[0] == king.x() && position[1] == king.y()).toList().isEmpty()
-                ).toList().isEmpty();
+                .filter(Objects::nonNull)
+                .filter(piece -> piece.isWhitePiece() != isWhite)
+                .anyMatch(piece -> canPieceAttackPosition(piece, king.x(), king.y()));
     }
 
-    public static ChessBoard newBoardWithPieces()
+    public boolean canPieceAttackPosition(ChessPiece piece, int targetX, int targetY)
     {
-        ChessPiece[][] board = new ChessPiece[8][8];
-        return new ChessBoard(board,null,true);
+        // This method checks if a piece can move to the target position
+        // without considering check rules
+        MoveRule moveRuleWithoutCheck = piece.PieceType().getMoveRule();
+
+        // Remove the CheckRule from the move validation
+        if (moveRuleWithoutCheck instanceof AndRule andRule) {
+            List<MoveRule> rulesWithoutCheck = andRule.rules.stream()
+                    .filter(rule -> !(rule instanceof CheckRule))
+                    .toList();
+
+            moveRuleWithoutCheck = new AndRule(rulesWithoutCheck.toArray(new MoveRule[0]));
+        }
+
+        return moveRuleWithoutCheck.isValidMove(this, piece, targetX, targetY);
     }
+
+    public ChessPiece findKing(Boolean isWhite) {
+        return Arrays.stream(board())
+                .flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
+                .filter(x -> x.PieceType() == PieceType.KING && x.isWhitePiece() == isWhite)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No king found for " + (isWhite ? "white" : "black")));
+    }
+
     public static ChessBoard newBoardWithPieces(ChessPiece... pieces)
     {
         ChessPiece[][] board = new ChessPiece[8][8];
@@ -76,12 +98,33 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
     }
     public ChessBoard newBoardWithMove(Integer pieceX, Integer pieceY, Integer desiredX, Integer desiredY)
     {
-        var newBoard = board.clone();
+        var newBoard = this.deepCloneBoard();
         var piece = board[pieceX][pieceY];
+        if(piece == null)
+            throw new Error("Piece is null 'newBoardWithMove' at x y " + pieceX + ", " + pieceY);
+
         newBoard[pieceX][pieceY] = null;
         newBoard[desiredX][desiredY] = new ChessPiece(piece.PieceType(), desiredX, desiredY, piece.isWhitePiece(), true);
         Boolean whitesTurn = !newBoard[desiredX][desiredY].isWhitePiece();
-        return new ChessBoard(newBoard,this,whitesTurn);
+        var out = new ChessBoard(newBoard,null,whitesTurn);
+        return out;
+    }
+
+    public ChessPiece[][] deepCloneBoard()
+    {
+        var out = new ChessPiece[8][8];
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                if(this.board()[x][y] == null)
+                    continue;
+
+                var old = this.board()[x][y];
+                out[x][y] = new ChessPiece(old.PieceType(),old.x(), old.y(), old.isWhitePiece(), old.hasMoved());
+            }
+        }
+        return out;
     }
 
     @Override

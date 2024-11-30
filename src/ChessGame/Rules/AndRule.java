@@ -7,11 +7,15 @@ import java.util.List;
 
 public class AndRule implements MoveRule
 {
-    List<MoveRule> rules;
+    public List<MoveRule> rules;
     @Override
     public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
     {
-        return rules.stream().allMatch(rule -> rule.isValidMove(board, piece, toX, toY));
+        for (MoveRule rule : rules)
+            if (!rule.isValidMove(board, piece, toX, toY))
+                return false;
+
+        return true;
     }
 
     public AndRule(MoveRule... rules)
