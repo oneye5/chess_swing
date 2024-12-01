@@ -1,9 +1,16 @@
 package ChessGame.Rules;
-
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
-
 import java.util.List;
+
+/**
+ * OrRule,
+ * A composite rule that takes any number of 'MoveRule's similar to AndRule but returns true if any of its rules return true.
+ *
+ * @see AndRule
+ * @see MoveRule
+ * @author Owan Lazic
+ */
 
 public class OrRule implements MoveRule
 {

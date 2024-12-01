@@ -1,7 +1,15 @@
 package ChessGame.Rules;
-
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
+
+/**
+ * CannotLandOnEnemyRule,
+ * Used for pawns, since they are unable to land on 'bad' pieces with their normal vertical movement.
+ *
+ * @see MoveRule
+ * @author Owan Lazic
+ */
+
 
 public class CannotLandOnEnemyRule implements MoveRule
 {

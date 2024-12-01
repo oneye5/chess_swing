@@ -1,7 +1,15 @@
 package ChessGame.Rules;
-
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
+
+/**
+ * FirstMoveRule,
+ * This is a composite rule, it takes another rule as an argument and if the piece has not already moved,
+ * it will evaluate and return the result of the composite rule.
+ *
+ * @see MoveRule
+ * @author Owan Lazic
+ */
 
 public class FirstMoveRule implements MoveRule
 {

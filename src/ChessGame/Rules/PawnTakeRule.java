@@ -1,7 +1,14 @@
 package ChessGame.Rules;
-
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
+
+/**
+ * PawnTakeRule,
+ * permits a piece to take another directly diagonal to itself.
+ *
+ * @see MoveRule
+ * @author Owan Lazic
+ */
 
 public class PawnTakeRule implements MoveRule
 {

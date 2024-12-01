@@ -1,7 +1,14 @@
 package ChessGame.Rules;
-
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
+
+/**
+ * CannotLandOnFriendlyRule,
+ * All chess pieces are unable to land on other pieces that are of the same color.
+ *
+ * @see MoveRule
+ * @author Owan Lazic
+ */
 
 public class CannotLandOnFriendlyRule implements MoveRule
 {

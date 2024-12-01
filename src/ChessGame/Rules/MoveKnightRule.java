@@ -1,7 +1,14 @@
 package ChessGame.Rules;
-
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
+
+/**
+ * MoveKnightRule
+ * Special rule for only knights, that permits the 'L' movement of knights
+ *
+ * @see MoveRule
+ * @author Owan Lazic
+ */
 
 public class MoveKnightRule implements MoveRule
 {
