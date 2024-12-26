@@ -69,8 +69,10 @@ public enum PieceType
                     new OrRule(
                             new MoveHorizontalRule(1),
                             new MoveVerticalRule(1),
-                            new MoveDiagonalRule(1)
+                            new MoveDiagonalRule(1),
+                            new CastlingRule()
                     ),
+                    new LineOfSightRule(),
                     new CheckRule()
             ));
 

@@ -107,6 +107,33 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         newBoard[desiredX][desiredY] = new ChessPiece(piece.PieceType(), desiredX, desiredY, piece.isWhitePiece(), true);
         Boolean whitesTurn = !newBoard[desiredX][desiredY].isWhitePiece();
         var out = new ChessBoard(newBoard,null,whitesTurn);
+
+        // special checks for en passant and castling, where things happen in two places at once
+        // if abs (deltaX > 1) for the king occurs then it must be castling
+        Integer deltaX = desiredX - pieceX;
+        if(piece.PieceType() == PieceType.KING && Math.abs(deltaX) > 1)
+        {
+            // need to move the apropriate rook
+            Integer rookPos;
+            Integer rookDesired;
+
+            if(deltaX > 1) //short castle right
+            {
+                rookPos = 7;
+                rookDesired = desiredX - 1;
+            }
+            else // long castle left
+            {
+                rookPos = 0;
+                rookDesired = desiredX + 1;
+            }
+
+            var rook = out.board()[rookPos][desiredY];
+            out.board()[rookPos][desiredY] = null;
+            out.board()[rookDesired][desiredY] = new ChessPiece(rook.PieceType(), rookDesired, desiredY, piece.isWhitePiece(), true);
+            out = new ChessBoard(out.deepCloneBoard(),null,whitesTurn);
+        }
+
         return out;
     }
 
