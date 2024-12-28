@@ -13,6 +13,7 @@ public enum PieceType
                     new CannotLandOnFriendlyRule(),
                     new LineOfSightRule(),
                     new OrRule(
+                            new EnPassantRule(),
                             new AndRule(
                                     new MoveVerticalRule(1),
                                     new CannotLandOnEnemyRule()),

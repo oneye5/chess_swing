@@ -106,7 +106,7 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         newBoard[pieceX][pieceY] = null;
         newBoard[desiredX][desiredY] = new ChessPiece(piece.PieceType(), desiredX, desiredY, piece.isWhitePiece(), true);
         Boolean whitesTurn = !newBoard[desiredX][desiredY].isWhitePiece();
-        var out = new ChessBoard(newBoard,null,whitesTurn);
+        var out = new ChessBoard(newBoard,this,whitesTurn);
 
         // special checks for en passant and castling, where things happen in two places at once
         // if abs (deltaX > 1) for the king occurs then it must be castling
@@ -131,7 +131,18 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
             var rook = out.board()[rookPos][desiredY];
             out.board()[rookPos][desiredY] = null;
             out.board()[rookDesired][desiredY] = new ChessPiece(rook.PieceType(), rookDesired, desiredY, piece.isWhitePiece(), true);
-            out = new ChessBoard(out.deepCloneBoard(),null,whitesTurn);
+            out = new ChessBoard(out.deepCloneBoard(),this,whitesTurn);
+        }
+
+
+        if (piece.PieceType() == PieceType.PAWN && deltaX != 0 && board[desiredX][desiredY] == null)
+        {
+            if (whitesTurn)
+                out.board()[desiredX][desiredY+1] = null;
+            else
+                out.board()[desiredX][desiredY-1] = null;
+
+            out = new ChessBoard(out.deepCloneBoard(),this, whitesTurn);
         }
 
         return out;
