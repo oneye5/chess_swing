@@ -2,8 +2,11 @@ package ChessGame;
 
 import ChessGame.Rules.*;
 
-import java.util.Arrays;
-import java.util.List;
+/**
+ * PieceType
+ * This class defines all the different pieces, and uses the MoveRule composite to define how the piece should act
+ * @author Owan Lazic
+ */
 
 public enum PieceType
 {

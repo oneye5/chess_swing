@@ -4,16 +4,20 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * ChessGame
+ * This class acts as a layer of abstraction for modifying and reading board/game state.
+ * It also provides functionality related to selecting a piece, moving the selected piece, and checking for win/lose conditions
+ *
+ * @author Owan Lazic
+ */
 public class ChessGame
 {
     private ChessBoard board;
     private ChessPiece selectedPiece = null;
     private Consumer<Boolean> onWIn;
 
-    public ChessGame()
-    {
-        board = ChessBoard.newGame();
-    }
+    public ChessGame() {board = ChessBoard.newGame();}
 
     public ChessBoard getBoard() {return board;}
 
@@ -60,10 +64,8 @@ public class ChessGame
         System.out.println("ChessGame.MoveSelectedPiece()\n"+ this.board.toString());
     }
 
-    public ChessPiece getSelectedPiece()
-    {
-        return selectedPiece;
-    }
+    public ChessPiece getSelectedPiece() {return selectedPiece;}
+
     public void checkForCheckmate()
     {
         Boolean result = false;

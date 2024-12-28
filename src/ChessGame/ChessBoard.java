@@ -11,8 +11,15 @@ import java.util.stream.Collectors;
 
 import ChessGame.Rules.*;
 /**
-* @param board 0,0 (a1) is bottom left, 7,7 (h8) is top right
+* ChessBoard
+* This class is responsible for storing the board state, it contains helpful utility methods to do with changing the current board state
+* or get a pieces available moves.
 *
+* @param board 0,0 (a1) is bottom left, 7,7 (h8) is top right
+* @param prevBoard contains the previous state the board was in, is null when no moves have been played
+* @param WhitesTurn is true when it is whites turn, methods such as newBoardWithMove negate the current value
+*
+* @author Owan Lazic
 */
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
