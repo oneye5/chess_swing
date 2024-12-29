@@ -3,6 +3,13 @@ package Controller;
 import ChessGame.*;
 import Renderer.*;
 
+/**
+ * VisualAvailableMoves
+ * Takes a chess game and uses it to add renderables showing the user where the selected piece may move.
+ *
+ * @author Owan Lazic
+ */
+
 public class VisualAvailableMoves
 {
     VisualAvailableMoves(ChessGame g)

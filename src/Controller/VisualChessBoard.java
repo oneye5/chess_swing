@@ -2,9 +2,15 @@ package Controller;
 
 import Renderer.Renderable;
 import Renderer.RenderableImage;
-
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * VisualChessBoard
+ * Responsible for adding the squares of a chess board to the renderer
+ *
+ * @author Owan Lazic
+ */
 
 public class VisualChessBoard
 {

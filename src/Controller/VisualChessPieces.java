@@ -10,7 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * VisualChessPieces
+ * Responsible for adding visual representations of every piece on the board
+ *
+ * @author Owan Lazic
+ */
 
 public class VisualChessPieces
 {

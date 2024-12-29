@@ -6,6 +6,12 @@ import Renderer.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * GameController
+ * Acts as a controller and a bridge between the game itself, and its visuals.
+ *
+ * @author Owan Lazic
+ */
 public class GameController implements MouseListener
 {
     private ChessGame game;
