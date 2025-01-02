@@ -115,14 +115,14 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         Boolean whitesTurn = !newBoard[desiredX][desiredY].isWhitePiece();
         var out = new ChessBoard(newBoard,this,whitesTurn);
 
-        // special checks for en passant and castling, where things happen in two places at once
-        // if abs (deltaX > 1) for the king occurs then it must be castling
-        Integer deltaX = desiredX - pieceX;
-        if(piece.PieceType() == PieceType.KING && Math.abs(deltaX) > 1)
+        // Code for special checks ================================
+        // this includes: en passant, castling and promoting pawns to Queens
+        int deltaX = desiredX - pieceX;
+        if(piece.PieceType() == PieceType.KING && Math.abs(deltaX) > 1) // if abs (deltaX > 1) for the king occurs then it must be castling
         {
-            // need to move the apropriate rook
-            Integer rookPos;
-            Integer rookDesired;
+            // need to move the appropriate rook
+            int rookPos;
+            int rookDesired;
 
             if(deltaX > 1) //short castle right
             {
@@ -141,16 +141,20 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
             out = new ChessBoard(out.deepCloneBoard(),this,whitesTurn);
         }
 
-
+        // en passant
         if (piece.PieceType() == PieceType.PAWN && deltaX != 0 && board[desiredX][desiredY] == null)
         {
             if (whitesTurn)
                 out.board()[desiredX][desiredY+1] = null;
             else
                 out.board()[desiredX][desiredY-1] = null;
-
             out = new ChessBoard(out.deepCloneBoard(),this, whitesTurn);
         }
+
+        // pawn promotion
+        if(out.board()[desiredX][desiredY].PieceType() == PieceType.PAWN)
+            if (desiredY == 0 || desiredY == 7)
+                out.board()[desiredX][desiredY] = new ChessPiece(PieceType.QUEEN, desiredX, desiredY, out.board()[desiredX][desiredY].isWhitePiece(), true);
 
         return out;
     }
