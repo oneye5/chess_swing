@@ -66,30 +66,24 @@ public class ChessGame
 
     public ChessPiece getSelectedPiece() {return selectedPiece;}
 
-    public void checkForCheckmate()
-    {
-        Boolean result = false;
-        if(getBoard().isInCheck(true) && getBoard().WhitesTurn())
-        {
-            result = Arrays.stream(board.board())
-                        .flatMap(Arrays::stream)
-                        .filter(Objects::nonNull)
-                        .filter(ChessPiece::isWhitePiece)
-                        .filter(piece->piece.getPossibleMoves(getBoard()).size()!=0)
-                        .toList().size() == 0;
+    public void checkForCheckmate() {
+        boolean isWhiteTurn = board.WhitesTurn();
+        boolean isInCheck = board.isInCheck(isWhiteTurn);
 
-        }
-        else if (getBoard().isInCheck(false) && !getBoard().WhitesTurn())
-        {
-            result = Arrays.stream(board.board())
-                    .flatMap(Arrays::stream)
-                    .filter(Objects::nonNull)
-                    .filter(x->!x.isWhitePiece())
-                    .filter(piece->piece.getPossibleMoves(getBoard()).size()!=0)
-                    .toList().size() == 0;
+        if (!isInCheck) {
+            return; // Not in check, so no need to check for checkmate.
         }
 
-        if(result)
-            System.out.println("CHECKMATE !!!!");
+        boolean hasValidMoves = Arrays.stream(board.board())
+                .flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
+                .filter(piece -> piece.isWhitePiece() == isWhiteTurn)
+                .anyMatch(piece -> !piece.getPossibleMoves(board).isEmpty());
+        if(hasValidMoves)
+            return;
+
+        System.out.println("CHECKMATE!!!");
+        if (onWIn != null)
+            onWIn.accept(isWhiteTurn); // Notify listeners (e.g., UI) of the win state.
     }
 }

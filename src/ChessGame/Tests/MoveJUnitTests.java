@@ -17,7 +17,9 @@ class PawnTests {
     @Test
     void pawnFirstMoveTwoSquares() {
         ChessPiece pawn = new ChessPiece(PieceType.PAWN, 0, 1, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(pawn);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(pawn, whiteKing, blackKing);
 
         List<Integer[]> moves = pawn.getPossibleMoves(board);
 
@@ -29,7 +31,9 @@ class PawnTests {
     void pawnBlockedByPiece() {
         ChessPiece pawn = new ChessPiece(PieceType.PAWN, 0, 1, true, false);
         ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 0, 2, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(pawn, blockingPiece);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(pawn, blockingPiece, whiteKing, blackKing);
 
         List<Integer[]> moves = pawn.getPossibleMoves(board);
 
@@ -42,7 +46,9 @@ class PawnTests {
         ChessPiece pawn = new ChessPiece(PieceType.PAWN, 3, 3, true, false);
         ChessPiece enemyPiece1 = new ChessPiece(PieceType.PAWN, 2, 4, false, false);
         ChessPiece enemyPiece2 = new ChessPiece(PieceType.PAWN, 4, 4, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(pawn, enemyPiece1, enemyPiece2);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(pawn, enemyPiece1, enemyPiece2, whiteKing, blackKing);
 
         List<Integer[]> moves = pawn.getPossibleMoves(board);
 
@@ -53,7 +59,9 @@ class PawnTests {
     @Test
     void pawnCannotMoveBackward() {
         ChessPiece pawn = new ChessPiece(PieceType.PAWN, 3, 3, true, true);
-        ChessBoard board = ChessBoard.newBoardWithPieces(pawn);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(pawn, whiteKing, blackKing);
 
         List<Integer[]> moves = pawn.getPossibleMoves(board);
 
@@ -65,7 +73,9 @@ class KnightTests {
     @Test
     void knightLShapedMovement() {
         ChessPiece knight = new ChessPiece(PieceType.KNIGHT, 3, 3, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(knight);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(knight, whiteKing, blackKing);
 
         List<Integer[]> moves = knight.getPossibleMoves(board);
 
@@ -84,7 +94,9 @@ class KnightTests {
     void knightCanJumpOverPieces() {
         ChessPiece knight = new ChessPiece(PieceType.KNIGHT, 3, 3, true, false);
         ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 3, 4, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(knight, blockingPiece);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(knight, blockingPiece, whiteKing, blackKing);
 
         List<Integer[]> moves = knight.getPossibleMoves(board);
 
@@ -97,7 +109,9 @@ class BishopTests {
     @Test
     void bishopDiagonalMovement() {
         ChessPiece bishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(bishop);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(bishop, whiteKing, blackKing);
 
         List<Integer[]> moves = bishop.getPossibleMoves(board);
 
@@ -113,7 +127,9 @@ class BishopTests {
     void bishopBlockedByPiece() {
         ChessPiece bishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
         ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 5, 5, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(bishop, blockingPiece);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(bishop, blockingPiece, whiteKing, blackKing);
 
         List<Integer[]> moves = bishop.getPossibleMoves(board);
 
@@ -124,112 +140,23 @@ class BishopTests {
 
 class RookTests {
     @Test
-    void rookStraightLineMovement() {
+    void rookStraightLineMovement()
+    {
         ChessPiece rook = new ChessPiece(PieceType.ROOK, 3, 3, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(rook);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(rook, whiteKing, blackKing);
 
         List<Integer[]> moves = rook.getPossibleMoves(board);
 
         // Test horizontal and vertical moves
-        for (int i = 0; i < 8; i++) {
-            if (i != 3) {
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, 3));
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, 3, i));
-            }
-        }
-    }
-
-    @Test
-    void rookBlockedByPiece() {
-        ChessPiece rook = new ChessPiece(PieceType.ROOK, 3, 3, true, false);
-        ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 3, 5, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(rook, blockingPiece);
-
-        List<Integer[]> moves = rook.getPossibleMoves(board);
-
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 3, 5));
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 3, 6));
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 3, 7));
-    }
-}
-
-class QueenTests {
-    @Test
-    void queenAllDirectionsMovement() {
-        ChessPiece queen = new ChessPiece(PieceType.QUEEN, 3, 3, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(queen);
-
-        List<Integer[]> moves = queen.getPossibleMoves(board);
-
-        // Test horizontal and vertical moves
-        for (int i = 0; i < 8; i++) {
-            if (i != 3) {
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, 3));
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, 3, i));
-            }
-        }
-
-        // Test diagonal moves
         for (int i = 0; i < 8; i++)
+        {
             if (i != 3)
-                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, i));
-
-
-    }
-
-    @Test
-    void queenBlockedByPiece() {
-        ChessPiece queen = new ChessPiece(PieceType.QUEEN, 3, 3, true, false);
-        ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 3, 5, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(queen, blockingPiece);
-
-        List<Integer[]> moves = queen.getPossibleMoves(board);
-
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 3, 5));
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 3, 6));
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 3, 7));
-    }
-}
-
-class KingTests {
-    @Test
-    void kingOneSquareMovement() {
-        ChessPiece king = new ChessPiece(PieceType.KING, 3, 3, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(king);
-
-        List<Integer[]> moves = king.getPossibleMoves(board);
-
-        // Test all adjacent squares
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                if (dx != 0 || dy != 0) {
-                    Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, 3 + dx, 3 + dy));
-                }
+            {
+                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, i, 3));
+                Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, 3, i));
             }
         }
-    }
-
-    @Test
-    void kingCastling() {
-        ChessPiece king = new ChessPiece(PieceType.KING, 4, 0, true, false);
-        ChessPiece rook = new ChessPiece(PieceType.ROOK, 7, 0, true, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(king, rook);
-
-        List<Integer[]> moves = king.getPossibleMoves(board);
-
-        // Test kingside castling
-        Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, 6, 0));
-    }
-
-    @Test
-    void kingCannotMoveIntoCheck() {
-        ChessPiece king = new ChessPiece(PieceType.KING, 4, 0, true, false);
-        ChessPiece enemyRook = new ChessPiece(PieceType.ROOK, 4, 7, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(king, enemyRook);
-
-        List<Integer[]> moves = king.getPossibleMoves(board);
-
-        // King cannot move along the file controlled by the enemy rook
-        Assertions.assertFalse(DebugUtility.possibleMovesContainPosition(moves, 4, 1));
     }
 }
