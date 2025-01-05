@@ -16,6 +16,10 @@ import java.util.List;
  */
 public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece, boolean hasMoved)
 {
+    /**
+     * @param board
+     * @return a list of arrays containing the x and y position on the board for the piece to move
+     */
     public List<Integer[]> getPossibleMoves(ChessBoard board)
     {
         List<Integer[]> out = new ArrayList<>();

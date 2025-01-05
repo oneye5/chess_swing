@@ -3,10 +3,7 @@ package ChessGame;
 import ChessGame.Rules.CheckRule;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import ChessGame.Rules.*;
@@ -23,7 +20,31 @@ import ChessGame.Rules.*;
 */
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
-    public boolean isInCheck(Boolean isWhite) {
+    public List<Integer[]> getAllMoves()
+    {
+        List<Integer[]> out = new ArrayList<>();
+        getTurnAppropriatePieces().forEach(p->{
+            var moves = p.getPossibleMoves(this);
+            moves = moves.stream().map(to->new Integer[]{p.x(),p.y(),to[0],to[1]}).toList(); // convert from {toX,toY} to {fromX,fromY,toX,toY}
+            out.addAll(moves);
+        });
+        return out;
+    }
+    public List<ChessPiece> getTurnAppropriatePieces()
+    {
+        return getAllPieces().stream()
+                .filter(p->p.isWhitePiece() == WhitesTurn)
+                .collect(Collectors.toList());
+    }
+    public List<ChessPiece> getAllPieces()
+    {
+        return Arrays.stream(board())
+                .flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+    public boolean isInCheck(Boolean isWhite)
+    {
         // Find the king's position
         ChessPiece king = findKing(isWhite);
 
@@ -37,12 +58,13 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
 
     public boolean canPieceAttackPosition(ChessPiece piece, int targetX, int targetY)
     {
-        // This method checks if a piece can move to the target position
+        // this method checks if a piece can move to the target position
         // without considering check rules
         MoveRule moveRuleWithoutCheck = piece.PieceType().getMoveRule();
 
-        // Remove the CheckRule from the move validation
-        if (moveRuleWithoutCheck instanceof AndRule andRule) {
+        // remove the CheckRule from the move validation
+        if (moveRuleWithoutCheck instanceof AndRule andRule)
+        {
             List<MoveRule> rulesWithoutCheck = andRule.rules.stream()
                     .filter(rule -> !(rule instanceof CheckRule))
                     .toList();
@@ -53,7 +75,8 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         return moveRuleWithoutCheck.isValidMove(this, piece, targetX, targetY);
     }
 
-    public ChessPiece findKing(Boolean isWhite) {
+    public ChessPiece findKing(Boolean isWhite)
+    {
         return Arrays.stream(board())
                 .flatMap(Arrays::stream)
                 .filter(Objects::nonNull)
@@ -192,4 +215,3 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         return sb.toString();
     }
 }
-
