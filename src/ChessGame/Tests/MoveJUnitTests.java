@@ -6,6 +6,8 @@ import ChessGame.PieceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -158,5 +160,24 @@ class RookTests {
                 Assertions.assertTrue(DebugUtility.possibleMovesContainPosition(moves, 3, i));
             }
         }
+    }
+}
+
+class MethodTests
+{
+    @Test
+    void getAvailableMoves()
+    {
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 0, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 7, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(whiteKing, blackKing);
+
+        List<Integer[]> moves = board.getAllMoves();
+        List<Integer[]> expectedMoves = List.of(new Integer[]{0,0,1,0},new Integer[]{0,0,1,1},new Integer[]{0,0,0,1});
+        for(var move : expectedMoves)
+        {
+            assert expectedMoves.contains(move);
+        }
+        assert moves.size() == expectedMoves.size();
     }
 }
