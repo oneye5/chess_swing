@@ -20,6 +20,7 @@ import ChessGame.Rules.*;
 */
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
+    public ChessBoard modifyTurn(boolean white) {return new ChessBoard(deepCloneBoard(),this,white);}
     public List<Integer[]> getAllMoves()
     {
         List<Integer[]> out = new ArrayList<>();

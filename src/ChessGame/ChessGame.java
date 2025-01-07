@@ -1,5 +1,7 @@
 package ChessGame;
 
+import ChessEngine.BoardEvaluationHeuristics.BoardHeuristic;
+
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -61,7 +63,8 @@ public class ChessGame
         board = board.newBoardWithMove(selectedPiece.x(), selectedPiece.y(), desiredX, desiredY);
         selectedPiece = null;
 
-        System.out.println("ChessGame.MoveSelectedPiece()\n"+ this.board.toString());
+        System.out.println(BoardHeuristic.INSTANCE.getHeuristic(board));
+
     }
 
     public ChessPiece getSelectedPiece() {return selectedPiece;}

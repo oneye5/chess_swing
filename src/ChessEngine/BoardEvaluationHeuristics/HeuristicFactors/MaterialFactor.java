@@ -1,6 +1,7 @@
 package ChessEngine.BoardEvaluationHeuristics.HeuristicFactors;
 import ChessEngine.BoardEvaluationHeuristics.HeuristicFactor;
 import ChessGame.ChessBoard;
+import ChessGame.ChessPiece;
 
 public class MaterialFactor extends HeuristicFactor
 {
@@ -9,6 +10,21 @@ public class MaterialFactor extends HeuristicFactor
     @Override
     public float evaluate(ChessBoard board)
     {
-        return 0;
+        var sumWhite = board.getAllPieces()
+                .stream()
+                .filter(ChessPiece::isWhitePiece)
+                .mapToDouble(p-> (double) p.PieceType().getPieceValue())
+                .sum();
+        var sumBlack = board.getAllPieces()
+                .stream()
+                .filter(p->!p.isWhitePiece())
+                .mapToDouble(p-> (double) p.PieceType().getPieceValue())
+                .sum();
+
+        //divide by 0 case
+        if (sumWhite + sumBlack == 0)
+            return 0.5f;
+
+        return (float) (sumWhite / (sumWhite + sumBlack));
     }
 }
