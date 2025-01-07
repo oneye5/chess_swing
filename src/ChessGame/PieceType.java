@@ -10,7 +10,7 @@ import ChessGame.Rules.*;
 
 public enum PieceType
 {
-    PAWN(
+    PAWN(1.0f,
             new AndRule(
                     new MoveUpOnlyRule(),
                     new CannotLandOnFriendlyRule(),
@@ -29,14 +29,14 @@ public enum PieceType
                     new CheckRule()
             )
     ),
-    KNIGHT(
+    KNIGHT(3.0f,
             new AndRule(
                     new MoveKnightRule(),
                     new CannotLandOnFriendlyRule(),
                     new CheckRule()
             )
     ),
-    BISHOP(
+    BISHOP(3.25f,
             new AndRule(
 
                     new MoveDiagonalRule(8),
@@ -45,7 +45,7 @@ public enum PieceType
                     new CheckRule()
             )
     ),
-    ROOK(
+    ROOK(5.0f,
             new AndRule(
                     new CannotLandOnFriendlyRule(),
                     new LineOfSightRule(),
@@ -56,7 +56,7 @@ public enum PieceType
                     new CheckRule()
             )
     ),
-    QUEEN(
+    QUEEN(9.0f,
             new AndRule(
                     new CannotLandOnFriendlyRule(),
                     new LineOfSightRule(),
@@ -67,7 +67,7 @@ public enum PieceType
             ),
                     new CheckRule()
     )),
-    KING(
+    KING(100,
             new AndRule(
                     new CannotLandOnFriendlyRule(),
                     new OrRule(
@@ -80,11 +80,17 @@ public enum PieceType
                     new CheckRule()
             ));
 
-    private final MoveRule rootRule;
-    public MoveRule getMoveRule() {return rootRule;}
-
-    PieceType(MoveRule rootRule)
+    PieceType(float pieceValue,MoveRule rootRule)
     {
         this.rootRule = rootRule;
+        this.pieceValue = pieceValue;
     }
+
+    private final MoveRule rootRule;
+    private float pieceValue;
+
+    public float getPieceValue() {return pieceValue;}
+    public void setPieceValue(float PieceValue) {this.pieceValue = PieceValue;}
+
+    public MoveRule getMoveRule() {return rootRule;}
 }
