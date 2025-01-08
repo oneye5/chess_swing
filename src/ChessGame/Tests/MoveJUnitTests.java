@@ -5,7 +5,7 @@ import ChessGame.ChessPiece;
 import ChessGame.PieceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import ChessEngine.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,4 +180,20 @@ class MethodTests
         }
         assert moves.size() == expectedMoves.size();
     }
+    @Test void treeNode()
+    {
+        ChessPiece whiteBishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(whiteBishop, whiteKing, blackKing);
+
+        var root = TreeNode.root(board);
+        var children = root.getChildren();
+        var child = children.get(0);
+        var cost1 = root.nodeHeuristic;
+        var cost2 = child.nodeHeuristic;
+        var cost3 = child.contextDependantCostToRoot();
+        assert cost3 == cost1 + (1.0f-cost2);
+    }
+
 }

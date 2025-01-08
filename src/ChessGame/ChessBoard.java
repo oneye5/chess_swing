@@ -127,6 +127,7 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
 
         return pieces.toArray(new ChessPiece[0]);
     }
+    public ChessBoard newBoardWithMove(Integer[] m) {return newBoardWithMove(m[0],m[1],m[2],m[3]);}
     public ChessBoard newBoardWithMove(Integer pieceX, Integer pieceY, Integer desiredX, Integer desiredY)
     {
         var newBoard = this.deepCloneBoard();
