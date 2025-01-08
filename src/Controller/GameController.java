@@ -33,6 +33,8 @@ public class GameController implements MouseListener
 
         if (tileX >= 0 && tileX < 8 && tileY >= 0 && tileY < 8)
             actionTile(tileX, tileY);
+        else
+            new VisualEngineEvaluation(game);
     }
 
     @Override public void mousePressed(MouseEvent e) {}

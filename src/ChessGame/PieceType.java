@@ -67,7 +67,7 @@ public enum PieceType
             ),
                     new CheckRule()
     )),
-    KING(100,
+    KING(9.0f,
             new AndRule(
                     new CannotLandOnFriendlyRule(),
                     new OrRule(

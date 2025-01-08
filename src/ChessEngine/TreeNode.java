@@ -52,9 +52,27 @@ public class TreeNode implements Comparable<TreeNode>
     {
         if(parent == null) // must be root
             return nodeHeuristic;
-        return getContextDependantHeuristic() + parent.contextDependantCostToRoot();
+        return getContextDependantHeuristic() -0.5f + costToRootIncrementalCost + parent.contextDependantCostToRoot() ;
+    }
+    static float costToRootIncrementalCost = 0.0f;
+    public int getDepth()
+    {
+        if (parent == null)
+            return 0;
+        return 1 + parent.getDepth();
+    }
+    public TreeNode getRoot()
+    {
+        if (parent == null)
+            return this;
+        return parent.getRoot();
     }
 
     @Override
-    public int compareTo(TreeNode o) {return Float.compare(this.nodeHeuristic, o.nodeHeuristic);}
+    public int compareTo(TreeNode o)
+    {
+       // return Float.compare(this.contextDependantCostToRoot(), o.contextDependantCostToRoot());
+        return Float.compare(getContextDependantHeuristic(),o.getContextDependantHeuristic());
+    }
+
 }

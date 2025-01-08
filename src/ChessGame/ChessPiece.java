@@ -20,6 +20,7 @@ public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece
      * @param board
      * @return a list of arrays containing the x and y position on the board for the piece to move
      */
+
     public List<Integer[]> getPossibleMoves(ChessBoard board)
     {
         List<Integer[]> out = new ArrayList<>();
@@ -29,6 +30,7 @@ public record ChessPiece(PieceType PieceType, int x, int y, boolean isWhitePiece
                     out.add(new Integer[]{x, y});
 
         return out;
+
     }
     public ChessPiece deepClone()
     {

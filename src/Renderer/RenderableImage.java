@@ -32,7 +32,8 @@ public enum RenderableImage
     BLACK_QUEEN  {public String getFileName(){return  "b_Queen.png";}},
     WHITE_KING   {public String getFileName(){return  "w_King.png";}},
     BLACK_KING   {public String getFileName(){return  "b_King.png";}},
-    BOARD_MARKER {public String getFileName(){return  "marker.png";}};
+    BOARD_MARKER {public String getFileName(){return  "marker.png";}},
+    ENGINE_MARKER{public String getFileName(){return  "eMarker.png";}};
 
     HashMap<String,Image> imageCache = new HashMap<>();
 

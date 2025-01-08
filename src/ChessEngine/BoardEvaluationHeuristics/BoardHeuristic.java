@@ -6,7 +6,7 @@ import ChessGame.ChessBoard;
 
 public enum BoardHeuristic
 {
-    INSTANCE( new MoveCountFactor(1.0f), new MaterialFactor(2.0f));
+    INSTANCE( new MoveCountFactor(0.01f), new MaterialFactor(1.0f));
     BoardHeuristic(HeuristicFactor... factors) {this.factors = factors;}
     final HeuristicFactor[] factors;
     public float getHeuristic(ChessBoard board)
