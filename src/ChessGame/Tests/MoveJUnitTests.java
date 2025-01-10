@@ -198,4 +198,14 @@ class MethodTests
         assert child.getChildren().get(0).getDepth() == 2;
     }
 
+    @Test void search()
+    {
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 0, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 7, 7, false, false);
+        ChessPiece blackPawn = new ChessPiece(PieceType.PAWN, 4, 4, false, false);
+        ChessPiece whitePawn = new ChessPiece(PieceType.PAWN, 3, 3, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(blackPawn, whitePawn, whiteKing, blackKing);
+        new ChessEngine().findBestMove(board);
+    }
+
 }

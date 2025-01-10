@@ -71,8 +71,12 @@ public class TreeNode implements Comparable<TreeNode>
     @Override
     public int compareTo(TreeNode o)
     {
-       // return Float.compare(this.contextDependantCostToRoot(), o.contextDependantCostToRoot());
-        return Float.compare(getContextDependantHeuristic(),o.getContextDependantHeuristic());
+       return Float.compare(this.contextDependantCostToRoot(), o.contextDependantCostToRoot());
+       // return Float.compare(nodeHeuristic, o.nodeHeuristic);
     }
-
+    @Override
+    public String toString()
+    {
+        return "node h:" + nodeHeuristic + " path h:" + contextDependantCostToRoot() ;
+    }
 }

@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 public class AStarMoveSearch implements MoveSearchAlgorithm
 {
     {
-        TreeNode.costToRootIncrementalCost = 0.1f;
+        TreeNode.costToRootIncrementalCost = 0.0f;
     }
     Integer maxDepth;
     public AStarMoveSearch(Integer maxDepth) {this.maxDepth = maxDepth;}
@@ -20,13 +20,14 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
     @Override
     public Integer[] findBestMove(ChessBoard currentBoard)
     {
-        System.out.println("Starting search for best move");
+        System.out.println("Starting a* search for best move");
 
         queue = new PriorityQueue<TreeNode>();
         queue.add(TreeNode.root(currentBoard));
         for (int i = 0; true; i++)
         {
             var head = queue.poll();
+//            var otherChildren = head.parent.getChildren();
             if (head.getDepth() > maxDepth)
             {
                 System.out.println("a* iterations = " + i);

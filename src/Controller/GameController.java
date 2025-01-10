@@ -1,5 +1,6 @@
 package Controller;
 
+import ChessEngine.BoardEvaluationHeuristics.BoardHeuristic;
 import ChessGame.*;
 import Renderer.*;
 
@@ -57,5 +58,7 @@ public class GameController implements MouseListener
        game.moveSelectedPiece(x, y);
        game.selectPiece(x, y);
        updateVisuals();
+
+        System.out.println( "current heuristic:" + BoardHeuristic.INSTANCE.getHeuristic(game.getBoard()));
     }
 }
