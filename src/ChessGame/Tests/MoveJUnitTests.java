@@ -190,10 +190,6 @@ class MethodTests
         var root = TreeNode.root(board);
         var children = root.getChildren();
         var child = children.get(0);
-        var cost1 = root.nodeHeuristic;
-        var cost2 = child.nodeHeuristic;
-        var cost3 = child.contextDependantCostToRoot();
-        assert cost3 == cost1 + (1.0f-cost2);
         assert child.getDepth() == 1;
         assert child.getChildren().get(0).getDepth() == 2;
     }

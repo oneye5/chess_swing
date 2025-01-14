@@ -40,21 +40,8 @@ public class TreeNode implements Comparable<TreeNode>
         return out;
     }
 
-    /**
-     * the heuristic value of each node is context dependant,
-     * for example the board heuristic 0.6 would look like the following:
-     * white to move (0.6)
-     * black to move (0.4)
-     * this needs to be done so that the move finding algorithm will select the most favorable move for both white and black
-     * @return summed context dependant heuristic from this node to the root
-     */
-    public float contextDependantCostToRoot()
-    {
-        if(parent == null) // must be root
-            return nodeHeuristic;
-        return getContextDependantHeuristic() -0.5f + costToRootIncrementalCost + parent.contextDependantCostToRoot() ;
-    }
-    static float costToRootIncrementalCost = 0.0f;
+    // utility methods
+
     public int getDepth()
     {
         if (parent == null)
@@ -67,16 +54,14 @@ public class TreeNode implements Comparable<TreeNode>
             return this;
         return parent.getRoot();
     }
-
-    @Override
-    public int compareTo(TreeNode o)
+    public List<TreeNode> getPathToRoot() {return getPathToRoot(new ArrayList<TreeNode>());} // public version of recursive method below
+    private List<TreeNode> getPathToRoot(List<TreeNode> path)
     {
-       return Float.compare(this.contextDependantCostToRoot(), o.contextDependantCostToRoot());
-       // return Float.compare(nodeHeuristic, o.nodeHeuristic);
+        if(parent == null)
+            return path;
+        path.add(this);
+        return parent.getPathToRoot(path);
     }
-    @Override
-    public String toString()
-    {
-        return "node h:" + nodeHeuristic + " path h:" + contextDependantCostToRoot() ;
-    }
+    public int compareTo(TreeNode o) {return Float.compare(getContextDependantHeuristic(), o.getContextDependantHeuristic());}
+    public String toString() {return "node h:" + nodeHeuristic;}
 }
