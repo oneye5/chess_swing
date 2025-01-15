@@ -40,7 +40,7 @@ class MoveFinder
         if (precomputedMoves.containsKey(p.PieceType()))
         {
             possibleMoves = precomputedMoves.get(p.PieceType());
-            possibleMoves = possibleMoves.parallelStream() // make relative to piece position and filter out, out of bounds positions
+            possibleMoves = possibleMoves.stream() // make relative to piece position and filter out, out of bounds positions
                     .map(m->new Integer[]{m[0]+p.x(),m[1]+p.y()})
                     .filter(m->m[0] >= 0 && m[1] >= 0)
                     .filter(m->m[0] < 8 && m[1] < 8)
@@ -53,7 +53,7 @@ class MoveFinder
                     possibleMoves.add(new Integer[]{x, y});
         }
 
-        return possibleMoves.parallelStream()
+        return possibleMoves.stream()
                     .filter(move->p.PieceType().getMoveRule().isValidMove(board,p,move[0],move[1]))
                     .toList();
     }

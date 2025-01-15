@@ -22,7 +22,7 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
         System.out.println("Starting a* search for best move");
 
         // all nodes at the depth limit will end up at the end of the queue
-        Comparator<TreeNode> comparator = (o1, o2) -> o1.getDepth() >= maxDepth ? -1 : o1.compareTo(o2);
+        Comparator<TreeNode> comparator = (o1, o2) -> o1.getDepth() >= maxDepth ? 1 : o1.compareTo(o2);
         queue = new PriorityQueue<TreeNode>(comparator);
 
         queue.add(TreeNode.root(currentBoard));
@@ -32,11 +32,21 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
             if (head.getDepth() > maxDepth) // no more nodes exist that have a depth less than the max depth
                 break;
 
-            queue.remove(head);
+            if(i%600 == 0)
+            {
+                Float progress = (float)i/(float)maxCheckedNodes;
+                progress *= 100.0f;
+                progress += 0.0001f;
+                var out = progress.toString().substring(0,4);
+                System.out.println(out + " %");
+            }
+
             queue.addAll(head.getChildren());
         }
-
         // find the most favorable leaf in the tree by sorting by the average
+
+
+
         System.out.println("Finished tree search, with " + queue.size() + " considered nodes\n selecting the best move");
 
         Function<TreeNode,Float> averagePathHeuristic = (n)-> {
@@ -45,6 +55,9 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
         };
         var sorted = new ArrayList<TreeNode>(queue.stream().toList());
         sorted.sort((a,b)-> Float.compare(averagePathHeuristic.apply(a), averagePathHeuristic.apply(b)));
+
+
+
         var out = findRootMove(sorted.get(0));
         return out;
     }

@@ -59,6 +59,6 @@ public class GameController implements MouseListener
        game.selectPiece(x, y);
        updateVisuals();
 
-        System.out.println( "current heuristic:" + BoardHeuristic.INSTANCE.getHeuristic(game.getBoard()));
+        System.out.println( "current heuristic:" + BoardHeuristic.PERFORMANT.getHeuristic(game.getBoard()));
     }
 }

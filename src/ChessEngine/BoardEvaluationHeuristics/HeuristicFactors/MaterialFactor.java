@@ -27,8 +27,8 @@ public class MaterialFactor extends HeuristicFactor
 
         float materialDifference = (float)(sumWhite-sumBlack);
 
-        return 1.0f / (1.0f + (float)Math.exp(-materialDifference / 8.0f)); //sigmoid 0-1
+        //return 1.0f / (1.0f + (float)Math.exp(-materialDifference / 8.0f)); //sigmoid 0-1
         //return (float)(sumWhite - sumBlack); //raw
-        //return (float) (sumWhite / (sumWhite + sumBlack)); //ratio 0-1
+        return (float) (sumWhite / (sumWhite + sumBlack)); //ratio 0-1
     }
 }

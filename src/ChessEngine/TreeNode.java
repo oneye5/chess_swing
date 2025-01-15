@@ -13,7 +13,7 @@ public class TreeNode implements Comparable<TreeNode>
     public ChessBoard board;
     public Integer[] precedingMove;
 
-    public static TreeNode root(ChessBoard board) {return new TreeNode(null,board,null, BoardHeuristic.INSTANCE.getHeuristic(board));};
+    public static TreeNode root(ChessBoard board) {return new TreeNode(null,board,null, BoardHeuristic.PERFORMANT.getHeuristic(board));};
     public float getContextDependantHeuristic(){return board.WhitesTurn() ? nodeHeuristic : 1.0f - nodeHeuristic;}
     private TreeNode(TreeNode parent, ChessBoard board, Integer[] move, float nodeHeuristic)
     {
@@ -27,7 +27,7 @@ public class TreeNode implements Comparable<TreeNode>
         this.parent = parent;
         this.precedingMove = move;
         this.board = parent.board.newBoardWithMove(move);
-        this.nodeHeuristic = BoardHeuristic.INSTANCE.getHeuristic(board);
+        this.nodeHeuristic = BoardHeuristic.PERFORMANT.getHeuristic(board);
     }
     public List<TreeNode> getChildren()
     {

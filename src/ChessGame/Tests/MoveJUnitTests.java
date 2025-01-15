@@ -204,4 +204,21 @@ class MethodTests
         new ChessEngine().findBestMove(board);
     }
 
+    @Test void getPrecedingMove()
+    {
+        ChessPiece bishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
+        ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 5, 5, true, false);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(bishop, blockingPiece, whiteKing, blackKing);
+
+        var nb = board.newBoardWithMove(3,3,4,4);
+        var move = nb.getPrecedingMove();
+
+        assert move != null;
+        assert move[0] == 3;
+        assert move[1] == 3;
+        assert move[2] == 4;
+        assert move[3] == 4;
+    }
 }

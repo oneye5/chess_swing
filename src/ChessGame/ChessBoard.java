@@ -2,9 +2,9 @@ package ChessGame;
 
 import ChessGame.Rules.CheckRule;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import ChessGame.Rules.*;
 /**
@@ -182,6 +182,40 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
                 out.board()[desiredX][desiredY] = new ChessPiece(PieceType.QUEEN, desiredX, desiredY, out.board()[desiredX][desiredY].isWhitePiece(), true);
 
         return out;
+    }
+
+    //finds the {fromX, fromY, toX, toY} based on the difference between the current and previous board.
+    public Integer[] getPrecedingMove()
+    {
+        if(prevBoard() == null)
+        {
+            System.out.println("ChessGame.Chessboard.prevBoard() is null, cannot find preceding move, returning null.");
+            return null;
+        }
+
+        Integer[] move = IntStream.range(0, 8)
+                .boxed()
+                .flatMap(x -> IntStream.range(0, 8).mapToObj(y -> new int[]{x, y}))
+                .collect(Collectors.teeing(
+                        Collectors.filtering(
+                                pos -> board()[pos[0]][pos[1]] != null &&
+                                        !board()[pos[0]][pos[1]].equals(prevBoard().board()[pos[0]][pos[1]]),
+                                Collectors.toList()
+                        ),
+                        Collectors.filtering(
+                                pos -> board()[pos[0]][pos[1]] == null && prevBoard().board()[pos[0]][pos[1]] != null,
+                                Collectors.toList()
+                        ),
+                        (toList, fromList) -> {
+                            if (toList.size() != 1 || fromList.size() != 1)  // could not determine preceding move
+                                return null;
+                            int[] to = toList.get(0);
+                            int[] from = fromList.get(0);
+                            return new Integer[]{from[0], from[1], to[0], to[1]};
+                        }
+                ));
+
+        return move;
     }
 
     public ChessPiece[][] deepCloneBoard()
