@@ -15,6 +15,68 @@ import java.util.List;
  *  Tests have been double-checked by Intellij's AI as well as chatgpt, as well as a manual review
  */
 
+
+class MethodTests
+{
+
+    @Test void search()
+    {
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 0, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 7, 7, false, false);
+        ChessPiece blackPawn = new ChessPiece(PieceType.PAWN, 4, 4, true, false);
+        ChessPiece whitePawn = new ChessPiece(PieceType.PAWN, 3, 3, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(blackPawn, whitePawn, whiteKing, blackKing);
+        new ChessEngine().findBestMove(board);
+    }
+    @Test
+    void getAvailableMoves()
+    {
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 0, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 7, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(whiteKing, blackKing);
+
+        List<Integer[]> moves = board.getAllMoves();
+        List<Integer[]> expectedMoves = List.of(new Integer[]{0,0,1,0},new Integer[]{0,0,1,1},new Integer[]{0,0,0,1});
+        for(var move : expectedMoves)
+        {
+            assert expectedMoves.contains(move);
+        }
+        assert moves.size() == expectedMoves.size();
+    }
+    @Test void treeNode()
+    {
+        ChessPiece whiteBishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(whiteBishop, whiteKing, blackKing);
+
+        var root = TreeNode.root(board);
+        var children = root.getChildren();
+        var child = children.get(0);
+        assert child.getDepth() == 1;
+        assert child.getChildren().get(0).getDepth() == 2;
+    }
+
+
+    @Test void getPrecedingMove()
+    {
+        ChessPiece bishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
+        ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 5, 5, true, false);
+        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
+        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
+        ChessBoard board = ChessBoard.newBoardWithPieces(bishop, blockingPiece, whiteKing, blackKing);
+
+        var nb = board.newBoardWithMove(3,3,4,4);
+        var move = nb.getPrecedingMove();
+
+        assert move != null;
+        assert move[0] == 3;
+        assert move[1] == 3;
+        assert move[2] == 4;
+        assert move[3] == 4;
+    }
+}
+
 class PawnTests {
     @Test
     void pawnFirstMoveTwoSquares() {
@@ -163,62 +225,3 @@ class RookTests {
     }
 }
 
-class MethodTests
-{
-    @Test
-    void getAvailableMoves()
-    {
-        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 0, 0, true, false);
-        ChessPiece blackKing = new ChessPiece(PieceType.KING, 7, 7, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(whiteKing, blackKing);
-
-        List<Integer[]> moves = board.getAllMoves();
-        List<Integer[]> expectedMoves = List.of(new Integer[]{0,0,1,0},new Integer[]{0,0,1,1},new Integer[]{0,0,0,1});
-        for(var move : expectedMoves)
-        {
-            assert expectedMoves.contains(move);
-        }
-        assert moves.size() == expectedMoves.size();
-    }
-    @Test void treeNode()
-    {
-        ChessPiece whiteBishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
-        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
-        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(whiteBishop, whiteKing, blackKing);
-
-        var root = TreeNode.root(board);
-        var children = root.getChildren();
-        var child = children.get(0);
-        assert child.getDepth() == 1;
-        assert child.getChildren().get(0).getDepth() == 2;
-    }
-
-    @Test void search()
-    {
-        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 0, 0, true, false);
-        ChessPiece blackKing = new ChessPiece(PieceType.KING, 7, 7, false, false);
-        ChessPiece blackPawn = new ChessPiece(PieceType.PAWN, 4, 4, false, false);
-        ChessPiece whitePawn = new ChessPiece(PieceType.PAWN, 3, 3, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(blackPawn, whitePawn, whiteKing, blackKing);
-        new ChessEngine().findBestMove(board);
-    }
-
-    @Test void getPrecedingMove()
-    {
-        ChessPiece bishop = new ChessPiece(PieceType.BISHOP, 3, 3, true, false);
-        ChessPiece blockingPiece = new ChessPiece(PieceType.PAWN, 5, 5, true, false);
-        ChessPiece whiteKing = new ChessPiece(PieceType.KING, 4, 0, true, false);
-        ChessPiece blackKing = new ChessPiece(PieceType.KING, 4, 7, false, false);
-        ChessBoard board = ChessBoard.newBoardWithPieces(bishop, blockingPiece, whiteKing, blackKing);
-
-        var nb = board.newBoardWithMove(3,3,4,4);
-        var move = nb.getPrecedingMove();
-
-        assert move != null;
-        assert move[0] == 3;
-        assert move[1] == 3;
-        assert move[2] == 4;
-        assert move[3] == 4;
-    }
-}

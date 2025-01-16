@@ -57,8 +57,17 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
         sorted.sort((a,b)-> Float.compare(averagePathHeuristic.apply(a), averagePathHeuristic.apply(b)));
 
 
-
+        System.out.println("done sorting, start information reporting");
+        System.out.println("average leaf node depth" + sorted.stream().mapToDouble(n->n.getDepth()).sum()/(double) sorted.size());
         var out = findRootMove(sorted.get(0));
+        System.out.println("with chosen node at depth " + sorted.get(0).getDepth() + " with the following boards from start to fin");
+        var current = sorted.get(0);
+        while(current.parent != null)
+        {
+            System.out.println(current.board);
+            System.out.println(current.board.WhitesTurn()?"white to move":"black to move");
+            current = current.parent;
+        }
         return out;
     }
 
