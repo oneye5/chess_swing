@@ -1,11 +1,10 @@
-package ChessEngine;
+package ChessEngine.MoveSearchAlgorithms;
 
-import ChessEngine.BoardEvaluationHeuristics.BoardHeuristic;
+import ChessEngine.TreeNode;
 import ChessGame.ChessBoard;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.function.Function;
 
@@ -61,20 +60,7 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
         System.out.println("average leaf node depth" + sorted.stream().mapToDouble(n->n.getDepth()).sum()/(double) sorted.size());
         var out = findRootMove(sorted.get(0));
         System.out.println("with chosen node at depth " + sorted.get(0).getDepth() + " with the following boards from start to fin");
-        var current = sorted.get(0);
-        while(current.parent != null)
-        {
-            System.out.println(current.board);
-            System.out.println(current.board.WhitesTurn()?"white to move":"black to move");
-            current = current.parent;
-        }
+        sorted.get(0).printBoardsToRoot();
         return out;
-    }
-
-    private Integer[] findRootMove(TreeNode node)
-    {
-        TreeNode current = node;
-        while(current.parent.parent != null) {current = current.parent;}
-        return current.precedingMove;
     }
 }

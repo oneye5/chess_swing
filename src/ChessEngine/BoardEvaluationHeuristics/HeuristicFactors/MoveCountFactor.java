@@ -3,6 +3,7 @@ import ChessEngine.BoardEvaluationHeuristics.HeuristicFactor;
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
 
+//this is very slow!
 public class MoveCountFactor extends HeuristicFactor
 {
     public MoveCountFactor(float weight){super(weight);}

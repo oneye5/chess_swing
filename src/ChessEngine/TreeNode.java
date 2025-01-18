@@ -62,6 +62,16 @@ public class TreeNode implements Comparable<TreeNode>
         path.add(this);
         return parent.getPathToRoot(path);
     }
+    public void printBoardsToRoot()
+    {
+        var current = this;
+        while(current.parent != null)
+        {
+            System.out.println(current.board);
+            System.out.println(current.board.WhitesTurn()?"white to move":"black to move");
+            current = current.parent;
+        }
+    }
     public int compareTo(TreeNode o) {return Float.compare(getContextDependantHeuristic(), o.getContextDependantHeuristic());}
     public String toString() {return "node h:" + nodeHeuristic;}
 }
