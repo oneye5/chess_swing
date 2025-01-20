@@ -20,7 +20,8 @@ public class BfsBruteForce implements MoveSearchAlgorithm
         List<TreeNode> nextBreadth = new ArrayList<TreeNode>();
         int currentDepth = 0;
 
-        nextBreadth.add( TreeNode.root(currentBoard));
+        var root =  TreeNode.root(currentBoard);
+        nextBreadth.add(root);
         while (!nextBreadth.isEmpty() && currentDepth < depth)
         {
             currentDepth++;
@@ -34,15 +35,7 @@ public class BfsBruteForce implements MoveSearchAlgorithm
         }
 
         System.out.println("finnished tree discovery, starting sort for best move, selecting from " + nextBreadth.size() + " leaf nodes");
-        // now find most desirable leaf
-        Function<TreeNode,Float> averagePathHeuristic = (n)-> {
-            var path = n.getPathToRoot();
-            return (float) ((path.stream().mapToDouble(x-> currentBoard.WhitesTurn() ? 1.0 - x.nodeHeuristic : x.nodeHeuristic).sum() / (double) path.size()));
-        };
-        var sorted = new ArrayList<TreeNode>(nextBreadth);
-        sorted.sort((a,b)-> Float.compare(averagePathHeuristic.apply(a), averagePathHeuristic.apply(b)));
-        System.out.println("move path to root");
-        sorted.get(0).printBoardsToRoot();
-       return findRootMove(sorted.get(0));
+
+       return Minimax.findMove(root,this.depth).precedingMove;
     }
 }
