@@ -23,13 +23,14 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
     public ChessBoard modifyTurn(boolean white) {return new ChessBoard(deepCloneBoard(),this,white);}
     public List<byte[]> getAllMoves()
     {
-        List<byte[]> out = new ArrayList<>();
-        getTurnAppropriatePieces().forEach(p->{
-            var moves = p.getPossibleMoves(this);
-            moves = moves.stream().map(to->new byte[]{p.x(),p.y(),to[0],to[1]}).toList(); // convert from {toX,toY} to {fromX,fromY,toX,toY}
-            out.addAll(moves);
-        });
-        return out;
+        return getTurnAppropriatePieces()
+                .stream()
+                .flatMap(p->
+                        p.getPossibleMoves(this)
+                                .stream()
+                                .map(to->new byte[]{p.x(),p.y(),to[0],to[1]})
+                )
+                .toList(); // convert from {toX,toY} to {fromX,fromY,toX,toY};);
     }
     public List<ChessPiece> getTurnAppropriatePieces()
     {
@@ -221,17 +222,8 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
     public ChessPiece[][] deepCloneBoard()
     {
         var out = new ChessPiece[8][8];
-        for (int x = 0; x < 8; x++)
-        {
-            for (int y = 0; y < 8; y++)
-            {
-                if(this.board()[x][y] == null)
-                    continue;
-
-                var old = this.board()[x][y];
-                out[x][y] = new ChessPiece(old.PieceType(),old.x(), old.y(), old.isWhitePiece(), old.hasMoved());
-            }
-        }
+        for (int i = 0; i < 8; i++)
+            System.arraycopy(board[i], 0, out[i], 0, 8);
         return out;
     }
 

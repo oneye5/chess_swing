@@ -34,15 +34,9 @@ public class TreeNode implements Comparable<TreeNode>
     {
         if (this.children != null)
             return this.children;
-
-        var moves = board.getAllMoves();
-        List<TreeNode> out = new ArrayList<>();
-
-        for (var move : moves)
-            out.add(new TreeNode(this ,move));
-
-        this.children = out;
-        return out;
+        var children = board.getAllMoves().stream().map(x->new TreeNode(this,x)).toList();
+        this.children = children;
+        return children;
     }
 
     // utility methods

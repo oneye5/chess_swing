@@ -1,6 +1,7 @@
 package Controller;
 
 import ChessEngine.BoardEvaluationHeuristics.BoardHeuristic;
+import ChessEngine.ChessEngine;
 import ChessGame.*;
 import Renderer.*;
 
@@ -23,6 +24,8 @@ public class GameController implements MouseListener
         game = new ChessGame();
         updateVisuals();
         Renderer.INSTANCE.addMouseListener(this);
+        var e = new ChessEngine();
+        e.findBestMove(game.getBoard());
     }
 
     @Override
