@@ -13,7 +13,7 @@ import ChessGame.ChessPiece;
 
 public class LineOfSightRule implements MoveRule {
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY) {
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY) {
         int deltaX = toX - piece.x();
         int deltaY = toY - piece.y();
 

@@ -18,7 +18,7 @@ public class AndRule implements MoveRule
     public AndRule(MoveRule... rules) {this.rules = List.of(rules);}
 
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
         for (MoveRule rule : rules)
             if (!rule.isValidMove(board, piece, toX, toY))

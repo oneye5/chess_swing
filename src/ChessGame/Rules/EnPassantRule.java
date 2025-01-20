@@ -11,14 +11,14 @@ import java.util.Objects;
 public class EnPassantRule implements MoveRule
 {
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
         // ensure current board has previous moves
         if (board.prevBoard() == null)
             return false;
 
         // find pawns left and right of current
-        Integer yDir = piece.isWhitePiece() ? 1 : -1;
+        int yDir = piece.isWhitePiece() ? 1 : -1;
 
         List<ChessPiece> candidates = new ArrayList<>();
         if(piece.x() != 7)

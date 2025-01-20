@@ -5,11 +5,11 @@ import ChessGame.ChessBoard;
 
 public interface MoveSearchAlgorithm
 {
-    public Integer[] findBestMove(ChessBoard currentBoard);
+    public byte[] findBestMove(ChessBoard currentBoard);
 
     // useful utility methods for the search algorithms
 
-    default Integer[] findRootMove(TreeNode node)
+    default byte[] findRootMove(TreeNode node)
     {
         TreeNode current = node;
         while(current.parent.parent != null) {current = current.parent;}

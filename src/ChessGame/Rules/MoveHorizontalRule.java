@@ -15,7 +15,7 @@ public class MoveHorizontalRule implements MoveRule
     private final Integer maxNumberOfSquares;
     public MoveHorizontalRule(Integer maxNumberOfSquares) {this.maxNumberOfSquares = maxNumberOfSquares;}
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
        return toY == piece.y() && Math.abs(toX - piece.x()) <= maxNumberOfSquares;
     }

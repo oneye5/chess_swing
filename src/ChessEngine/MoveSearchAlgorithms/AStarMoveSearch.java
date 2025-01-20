@@ -16,7 +16,7 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
 
     private PriorityQueue<TreeNode> queue;
     @Override
-    public Integer[] findBestMove(ChessBoard currentBoard)
+    public byte[] findBestMove(ChessBoard currentBoard)
     {
         System.out.println("Starting a* search for best move");
 

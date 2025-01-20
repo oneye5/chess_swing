@@ -14,12 +14,9 @@ import ChessGame.ChessPiece;
 public class FirstMoveRule implements MoveRule
 {
     MoveRule rule;
-    public FirstMoveRule(MoveRule rule)
-    {
-        this.rule = rule;
-    }
+    public FirstMoveRule(MoveRule rule) {this.rule = rule;}
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
         return !piece.hasMoved() && rule.isValidMove(board, piece, toX, toY);
     }

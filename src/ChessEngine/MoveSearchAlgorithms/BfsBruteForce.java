@@ -12,7 +12,7 @@ public class BfsBruteForce implements MoveSearchAlgorithm
     int depth;
     public BfsBruteForce(int depth) {this.depth = depth;}
     @Override
-    public Integer[] findBestMove(ChessBoard currentBoard)
+    public byte[] findBestMove(ChessBoard currentBoard)
     {
         System.out.println("Starting bfs brute force search");
 

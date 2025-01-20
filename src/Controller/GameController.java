@@ -53,10 +53,10 @@ public class GameController implements MouseListener
 
     public void tick() {Renderer.INSTANCE.repaint();}
 
-    public void actionTile(Integer x, Integer y)
+    public void actionTile(int x, int y)
     {
-       game.moveSelectedPiece(x, y);
-       game.selectPiece(x, y);
+       game.moveSelectedPiece((byte)x, (byte)y);
+       game.selectPiece((byte)x, (byte)y);
        updateVisuals();
 
         System.out.println( "current heuristic:" + BoardHeuristic.PERFORMANT.getHeuristic(game.getBoard()));

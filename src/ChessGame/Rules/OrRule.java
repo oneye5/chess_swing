@@ -16,11 +16,7 @@ public class OrRule implements MoveRule
 {
     List<MoveRule> rules;
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
-    {
-        return rules.stream().anyMatch(rule -> rule.isValidMove(board, piece, toX, toY));
-    }
-
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY) {return rules.stream().anyMatch(rule -> rule.isValidMove(board, piece, toX, toY));}
     public OrRule(MoveRule... rules)
     {
         this.rules = List.of(rules);

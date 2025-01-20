@@ -14,7 +14,7 @@ public class MoveKnightRule implements MoveRule
 {
 
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
         int fromX = piece.x();
         int fromY = piece.y();

@@ -19,7 +19,7 @@ public class PawnStructureFactor extends HeuristicFactor
        // check white for pawns defending pawns
        for (var p : whitePawns)
        {
-           Integer[] target = new Integer[]{p.x(), p.y()};
+           byte[] target = new byte[]{p.x(), p.y()};
            if (!(target[0] >= 0 && target[0] < 8 && target[1] >= 0 && target[1] < 8 )) // out of bounds
                continue;
            var left = target[0] - 1 >= 0 ? board.board()[target[0]-1][target[1]-1] : null;
@@ -38,7 +38,7 @@ public class PawnStructureFactor extends HeuristicFactor
 
         for (var p : blackPawns)
         {
-            Integer[] target = new Integer[]{p.x(), p.y()};
+            byte[] target = new byte[]{p.x(), p.y()};
             if (!(target[0] >= 0 && target[0] < 8 && target[1] >= 0 && target[1] < 8 )) // out of bounds
                 continue;
             var left = target[0] - 1 >= 0 ? board.board()[target[0]-1][target[1]+1] : null;

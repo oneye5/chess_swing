@@ -15,7 +15,7 @@ import ChessGame.ChessPiece;
 
 public class CheckRule implements MoveRule {
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
         // Create a new board with the proposed move
         ChessBoard newBoard = board.newBoardWithMove(piece.x(), piece.y(), toX, toY);

@@ -13,7 +13,7 @@ import ChessGame.ChessPiece;
 public class CannotLandOnFriendlyRule implements MoveRule
 {
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
         return board.board()[toX][toY] == null || board.board()[toX][toY].isWhitePiece() != piece.isWhitePiece();
     }

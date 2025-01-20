@@ -18,5 +18,5 @@ public interface MoveRule
      * @param toY   Desired X position on the board to test if the desired piece can move to it.
      * @return returns if it is a valid move or not.
      */
-    Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY);
+    Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY);
 }

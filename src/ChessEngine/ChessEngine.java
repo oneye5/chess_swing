@@ -12,5 +12,5 @@ public class ChessEngine
          //new AStarMoveSearch(10,2496*10);
            //new BeamSearch(5,0.75f);
     public void setSearchAlgorithm(MoveSearchAlgorithm searchAlgorithm) {this.searchAlgorithm = searchAlgorithm;}
-    public Integer[] findBestMove(ChessBoard board) { return searchAlgorithm.findBestMove(board); }
+    public byte[] findBestMove(ChessBoard board) { return searchAlgorithm.findBestMove(board); }
 }

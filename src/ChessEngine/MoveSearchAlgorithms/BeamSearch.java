@@ -12,7 +12,7 @@ public class BeamSearch implements MoveSearchAlgorithm
     final float pruneSize;
     public BeamSearch(int depth, float prunedPortion) {this.depth = depth;this.pruneSize = prunedPortion;}
 
-    public Integer[] findBestMove(ChessBoard currentBoard)
+    public byte[] findBestMove(ChessBoard currentBoard)
     {
         var root = TreeNode.root(currentBoard);
         List<TreeNode> currentBreadth;

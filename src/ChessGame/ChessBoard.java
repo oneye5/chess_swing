@@ -21,12 +21,12 @@ import ChessGame.Rules.*;
 public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean WhitesTurn)
 {
     public ChessBoard modifyTurn(boolean white) {return new ChessBoard(deepCloneBoard(),this,white);}
-    public List<Integer[]> getAllMoves()
+    public List<byte[]> getAllMoves()
     {
-        List<Integer[]> out = new ArrayList<>();
+        List<byte[]> out = new ArrayList<>();
         getTurnAppropriatePieces().forEach(p->{
             var moves = p.getPossibleMoves(this);
-            moves = moves.stream().map(to->new Integer[]{p.x(),p.y(),to[0],to[1]}).toList(); // convert from {toX,toY} to {fromX,fromY,toX,toY}
+            moves = moves.stream().map(to->new byte[]{p.x(),p.y(),to[0],to[1]}).toList(); // convert from {toX,toY} to {fromX,fromY,toX,toY}
             out.addAll(moves);
         });
         return out;
@@ -57,7 +57,7 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
                 .anyMatch(piece -> canPieceAttackPosition(piece, king.x(), king.y()));
     }
 
-    public boolean canPieceAttackPosition(ChessPiece piece, int targetX, int targetY)
+    public boolean canPieceAttackPosition(ChessPiece piece, byte targetX, byte targetY)
     {
         // this method checks if a piece can move to the target position
         // without considering check rules
@@ -100,35 +100,35 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         List<ChessPiece> pieces = new ArrayList<ChessPiece>();
 
         // Set up pawns (ranks 2 and 7)
-        for (int x = 0; x < 8; x++) {  // Fixed: should be < 8, not < 7
-            pieces.add(new ChessPiece(PieceType.PAWN, x, 1, true, false));   // White pawns
-            pieces.add(new ChessPiece(PieceType.PAWN, x, 6, false, false));  // Black pawns
+        for (byte x = 0; x < 8; x++) {  // Fixed: should be < 8, not < 7
+            pieces.add(new ChessPiece(PieceType.PAWN, x, (byte)1, true, false));   // White pawns
+            pieces.add(new ChessPiece(PieceType.PAWN, x, (byte)6, false, false));  // Black pawns
         }
 
         // White pieces (rank 1)
-        pieces.add(new ChessPiece(PieceType.ROOK,   0, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.KNIGHT, 1, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.BISHOP, 2, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.QUEEN,  3, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.KING,   4, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.BISHOP, 5, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.KNIGHT, 6, 0, true, false));
-        pieces.add(new ChessPiece(PieceType.ROOK,   7, 0, true, false));
+        pieces.add(new ChessPiece(PieceType.ROOK,   (byte)0, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, (byte)1, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, (byte)2, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.QUEEN,  (byte)3, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.KING,   (byte)4, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, (byte)5, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, (byte)6, (byte)0, true, false));
+        pieces.add(new ChessPiece(PieceType.ROOK,   (byte)7, (byte)0, true, false));
 
         // Black pieces (rank 8 - appears as y=7 in zero-based coordinates)
-        pieces.add(new ChessPiece(PieceType.ROOK,   0, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.KNIGHT, 1, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.BISHOP, 2, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.QUEEN,  3, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.KING,   4, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.BISHOP, 5, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.KNIGHT, 6, 7, false, false));
-        pieces.add(new ChessPiece(PieceType.ROOK,   7, 7, false, false));
+        pieces.add(new ChessPiece(PieceType.ROOK,   (byte)0, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, (byte)1, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, (byte)2, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.QUEEN,  (byte)3, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.KING,   (byte)4, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.BISHOP, (byte)5, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.KNIGHT, (byte)6, (byte)7, false, false));
+        pieces.add(new ChessPiece(PieceType.ROOK,   (byte)7, (byte)7, false, false));
 
         return pieces.toArray(new ChessPiece[0]);
     }
-    public ChessBoard newBoardWithMove(Integer[] m) {return newBoardWithMove(m[0],m[1],m[2],m[3]);}
-    public ChessBoard newBoardWithMove(Integer pieceX, Integer pieceY, Integer desiredX, Integer desiredY)
+    public ChessBoard newBoardWithMove(byte[] m) {return newBoardWithMove(m[0],m[1],m[2],m[3]);}
+    public ChessBoard newBoardWithMove(byte pieceX, byte pieceY, byte desiredX, byte desiredY)
     {
         var newBoard = this.deepCloneBoard();
         var piece = board[pieceX][pieceY];
@@ -146,18 +146,18 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
         if(piece.PieceType() == PieceType.KING && Math.abs(deltaX) > 1) // if abs (deltaX > 1) for the king occurs then it must be castling
         {
             // need to move the appropriate rook
-            int rookPos;
-            int rookDesired;
+            byte rookPos;
+            byte rookDesired;
 
             if(deltaX > 1) //short castle right
             {
                 rookPos = 7;
-                rookDesired = desiredX - 1;
+                rookDesired = (byte) (desiredX - 1);
             }
             else // long castle left
             {
                 rookPos = 0;
-                rookDesired = desiredX + 1;
+                rookDesired = (byte) (desiredX + 1);
             }
 
             var rook = out.board()[rookPos][desiredY];

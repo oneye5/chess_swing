@@ -24,7 +24,7 @@ public class ChessGame
 
     public ChessBoard getBoard() {return board;}
 
-    public void selectPiece(int x, int y)
+    public void selectPiece(byte x, byte y)
     {
         if(board.board()[x][y] == null)
         {
@@ -32,7 +32,7 @@ public class ChessGame
             return;
         }
 
-        if(selectedPiece != null && selectedPiece.getPossibleMoves(board).contains(new Integer[]{x, y}))
+        if(selectedPiece != null && selectedPiece.getPossibleMoves(board).contains(new byte[]{x, y}))
             return;
 
 
@@ -48,7 +48,7 @@ public class ChessGame
             selectedPiece = piece;
     }
 
-    public void moveSelectedPiece(int desiredX, int desiredY)
+    public void moveSelectedPiece(byte desiredX, byte desiredY)
     {
         if (selectedPiece == null)
             return;

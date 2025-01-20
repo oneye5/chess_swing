@@ -7,10 +7,10 @@ import ChessGame.PieceType;
 public class CastlingRule implements MoveRule
 {
     @Override
-    public Boolean isValidMove(ChessBoard board, ChessPiece piece, int toX, int toY)
+    public Boolean isValidMove(ChessBoard board, ChessPiece piece, byte toX, byte toY)
     {
-        Integer deltaX = toX - piece.x();
-        Integer deltaY = toY - piece.y();
+        int deltaX = toX - piece.x();
+        int deltaY = toY - piece.y();
 
         if(deltaY != 0) // does not move on the y-axis
             return false;
