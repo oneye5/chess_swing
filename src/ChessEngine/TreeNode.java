@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TreeNode implements Comparable<TreeNode>
 {
-    public float nodeHeuristic;
+    private Float nodeHeuristic = null;
     public TreeNode parent;
     public ChessBoard board;
     public Integer[] precedingMove;
@@ -29,7 +29,6 @@ public class TreeNode implements Comparable<TreeNode>
         this.parent = parent;
         this.precedingMove = move;
         this.board = parent.board.newBoardWithMove(move);
-        this.nodeHeuristic = BoardHeuristic.PERFORMANT.getHeuristic(board);
     }
     public List<TreeNode> getChildren()
     {
@@ -77,6 +76,12 @@ public class TreeNode implements Comparable<TreeNode>
             System.out.println(current.board.WhitesTurn()?"white to move":"black to move");
             current = current.parent;
         }
+    }
+    public float getNodeHeuristic()
+    {
+        if (nodeHeuristic == null)
+            nodeHeuristic = BoardHeuristic.PERFORMANT.getHeuristic(board);
+        return nodeHeuristic;
     }
     public boolean hasEvaluatedChildren() {return this.children != null;}
     public int compareTo(TreeNode o) {return Float.compare(getContextDependantHeuristic(), o.getContextDependantHeuristic());}

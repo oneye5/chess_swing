@@ -13,7 +13,7 @@ public class Minimax
     {
         float value;
         if (depth == 0 || !node.hasEvaluatedChildren())
-            return node.nodeHeuristic;
+            return node.getNodeHeuristic();
 
         value = node.board.WhitesTurn() ? Float.NEGATIVE_INFINITY : Float.POSITIVE_INFINITY ;
         for(var n : node.getChildren())

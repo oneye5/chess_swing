@@ -23,8 +23,8 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
         // all nodes at the depth limit will end up at the end of the queue
         Comparator<TreeNode> comparator = (o1, o2) -> o1.getDepth() >= maxDepth ? 1 : o1.compareTo(o2);
         queue = new PriorityQueue<TreeNode>(comparator);
-
-        queue.add(TreeNode.root(currentBoard));
+        var root = TreeNode.root(currentBoard);
+        queue.add(root);
         for (int i = 0; i < maxCheckedNodes; i++)
         {
             var head = queue.poll();
@@ -47,20 +47,7 @@ public class AStarMoveSearch implements MoveSearchAlgorithm
 
 
         System.out.println("Finished tree search, with " + queue.size() + " considered nodes\n selecting the best move");
-
-        Function<TreeNode,Float> averagePathHeuristic = (n)-> {
-            var path = n.getPathToRoot();
-            return (float) ((path.stream().mapToDouble(x-> currentBoard.WhitesTurn() ? 1.0 - x.nodeHeuristic : x.nodeHeuristic).sum() / (double) path.size()));
-        };
-        var sorted = new ArrayList<TreeNode>(queue.stream().toList());
-        sorted.sort((a,b)-> Float.compare(averagePathHeuristic.apply(a), averagePathHeuristic.apply(b)));
-
-
-        System.out.println("done sorting, start information reporting");
-        System.out.println("average leaf node depth" + sorted.stream().mapToDouble(n->n.getDepth()).sum()/(double) sorted.size());
-        var out = findRootMove(sorted.get(0));
-        System.out.println("with chosen node at depth " + sorted.get(0).getDepth() + " with the following boards from start to fin");
-        sorted.get(0).printBoardsToRoot();
-        return out;
+        System.out.println("average leaf node depth" + queue.stream().mapToDouble(n->n.getDepth()).sum()/(double) queue.size());
+        return Minimax.findMove(root,maxDepth).precedingMove;
     }
 }
