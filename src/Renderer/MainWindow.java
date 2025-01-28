@@ -30,9 +30,14 @@ class MainWindow
             }
         };
 
+
+        UserInterface ui = new UserInterface();
+        frame.add(ui.getPanel(), BorderLayout.EAST); // Add to the right side of the frame
+
         frame.add(panel);
         frame.setVisible(true);
     }
+
 
     public JPanel getPanel() {return panel;}
 }
