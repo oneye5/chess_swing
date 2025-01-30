@@ -26,6 +26,7 @@ public class GameController implements MouseListener
         Renderer.INSTANCE.addMouseListener(this);
         var e = new ChessEngine();
         e.findBestMove(game.getBoard());
+        UserInterface.INSTANCE.setUIChanged(this::tickUI);
     }
 
     @Override
@@ -63,5 +64,11 @@ public class GameController implements MouseListener
        updateVisuals();
 
         System.out.println( "current heuristic:" + BoardHeuristic.PERFORMANT.getHeuristic(game.getBoard()));
+    }
+
+    private void tickUI()
+    {
+        System.out.println("check depth");
+        ChessEngine.depth = UserInterface.INSTANCE.getDepth();
     }
 }

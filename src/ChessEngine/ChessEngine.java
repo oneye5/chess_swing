@@ -8,7 +8,8 @@ import ChessGame.ChessBoard;
 
 public class ChessEngine
 {
-    private MoveSearchAlgorithm searchAlgorithm = new BfsBruteForce(3);
+    public static Integer depth = 3;
+    private MoveSearchAlgorithm searchAlgorithm = new BfsBruteForce(()->depth);
          //new AStarMoveSearch(10,2496*10);
            //new BeamSearch(5,0.75f);
     public void setSearchAlgorithm(MoveSearchAlgorithm searchAlgorithm) {this.searchAlgorithm = searchAlgorithm;}

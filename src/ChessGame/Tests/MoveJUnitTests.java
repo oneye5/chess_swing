@@ -18,6 +18,12 @@ import java.util.List;
 
 class MethodTests
 {
+    @Test void x()
+    {
+        var x = new ChessEngine();
+        ChessEngine.depth = 2;
+        int y = 0;
+    }
 
     @Test void search()
     {

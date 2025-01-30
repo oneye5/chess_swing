@@ -4,36 +4,42 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.util.function.Consumer;
 
-public class UserInterface
+public enum UserInterface
 {
-    private final JPanel sidePanel;
-    private int depth = 3; // Default depth
-    private String searchAlgorithm = "BFS"; // Default algorithm
+    INSTANCE;
 
-    public UserInterface()
+    private final JPanel sidePanel;
+    private int depth = 3; // default engine depth
+    private String searchAlgorithm = "BFS"; // default engine algorithm
+    private Runnable UIChanged = ()->System.out.println("UI changed runnable (UserInterface.java) has not been set");
+
+    UserInterface()
     {
         sidePanel = new JPanel();
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Depth Control
+        // depth Control
         JPanel depthPanel = new JPanel();
         depthPanel.setLayout(new BoxLayout(depthPanel, BoxLayout.Y_AXIS));
         JLabel depthLabel = new JLabel("Depth: " + depth);
         JSlider depthSlider = new JSlider(JSlider.HORIZONTAL, 1, 10, depth);
 
         depthSlider.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e)
+            {
                 depth = depthSlider.getValue();
                 depthLabel.setText("Depth: " + depth);
+                UIChanged.run();
             }
         });
 
         depthPanel.add(depthLabel);
         depthPanel.add(depthSlider);
 
-        // Search Algorithm Dropdown
+        // search Algorithm Dropdown
         JPanel algorithmPanel = new JPanel();
         algorithmPanel.setLayout(new BoxLayout(algorithmPanel, BoxLayout.Y_AXIS));
         JLabel algorithmLabel = new JLabel("Search Algorithm:");
@@ -42,17 +48,18 @@ public class UserInterface
 
         algorithmComboBox.addActionListener(e -> {
             searchAlgorithm = (String) algorithmComboBox.getSelectedItem();
+            UIChanged.run();
         });
 
         algorithmPanel.add(algorithmLabel);
         algorithmPanel.add(algorithmComboBox);
 
-        // Buttons
+        // buttons
         JButton newGameButton = new JButton("New Game");
         JButton findBestMoveButton = new JButton("Find Best Move");
         JButton makeMoveButton = new JButton("Make Move");
 
-        // Add components to side panel with spacing
+        // add components to side panel with spacing
         sidePanel.add(depthPanel);
         sidePanel.add(Box.createVerticalStrut(20));
         sidePanel.add(algorithmPanel);
@@ -63,14 +70,14 @@ public class UserInterface
         sidePanel.add(Box.createVerticalStrut(10));
         sidePanel.add(makeMoveButton);
 
-        // Set preferred sizes for consistent layout
+        // set preferred sizes for consistent layout
         Dimension buttonSize = new Dimension(150, 30);
         newGameButton.setMaximumSize(buttonSize);
         findBestMoveButton.setMaximumSize(buttonSize);
         makeMoveButton.setMaximumSize(buttonSize);
         algorithmComboBox.setMaximumSize(buttonSize);
 
-        // Align components
+        // align components
         depthLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         depthSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
         algorithmLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -80,17 +87,9 @@ public class UserInterface
         makeMoveButton.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
-    // Getters for engine parameters
-    public int getDepth() {
-        return depth;
-    }
+    public int getDepth() {return depth;}
+    public String getSearchAlgorithm() {return searchAlgorithm;}
+    public JPanel getPanel() {return sidePanel;}
 
-    public String getSearchAlgorithm() {
-        return searchAlgorithm;
-    }
-
-    // Method to get the panel for adding to main frame
-    public JPanel getPanel() {
-        return sidePanel;
-    }
+    public void setUIChanged(Runnable UIChanged) {this.UIChanged = UIChanged;}
 }
