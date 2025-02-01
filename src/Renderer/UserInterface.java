@@ -7,6 +7,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public enum UserInterface {
     INSTANCE;
 
@@ -108,6 +110,14 @@ public enum UserInterface {
     public int getDepth() {return depth;}
     public String getSearchAlgorithm() {return searchAlgorithm;}
     public JPanel getPanel() {return sidePanel;}
+
+    public void onWin(Boolean white)
+    {
+        if(white)
+            showMessageDialog(null, "White wins!");
+        else
+            showMessageDialog(null, "black wins!");
+    }
 
     public void setOnUIChangedRunnable(Runnable UIChanged) {this.UIChanged = UIChanged;}
     public void setOnNewGamePressed(Runnable pressed)      {this.newGamePressed = pressed;}

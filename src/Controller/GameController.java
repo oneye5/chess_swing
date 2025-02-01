@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
  */
 public class GameController implements MouseListener
 {
+    private Boolean hasReportedWin = false;
     private ChessGame game;
     public static float squareSize = 80.0f;
 
@@ -30,6 +31,7 @@ public class GameController implements MouseListener
 
         UserInterface.INSTANCE.setOnNewGamePressed(()->{
             game = new ChessGame();
+            hasReportedWin = false;
             updateVisuals();
         });
 
@@ -40,6 +42,9 @@ public class GameController implements MouseListener
 
         UserInterface.INSTANCE.setOnMakeMovePressed(()->{
             var move = new ChessEngine().findBestMove(game.getBoard());
+            if(move == null)
+                return;
+
             game.selectPiece(move[0],move[1]);
             game.moveSelectedPiece(move[2],move[3]);
             updateVisuals();
@@ -70,6 +75,9 @@ public class GameController implements MouseListener
         new VisualChessBoard();
         new VisualChessPieces(game.getBoard());
         new VisualAvailableMoves(game);
+
+        if(!hasReportedWin && game.getBoard().getAllMoves().size() == 0)
+            UserInterface.INSTANCE.onWin(!game.getBoard().WhitesTurn());
     }
 
     public void tick() {Renderer.INSTANCE.repaint();}
@@ -83,9 +91,5 @@ public class GameController implements MouseListener
         System.out.println( "current heuristic:" + BoardHeuristic.PERFORMANT.getHeuristic(game.getBoard()));
     }
 
-    private void tickUI()
-    {
-        System.out.println("check depth");
-        ChessEngine.depth = UserInterface.INSTANCE.getDepth();
-    }
+    private void tickUI() {ChessEngine.depth = UserInterface.INSTANCE.getDepth();}
 }

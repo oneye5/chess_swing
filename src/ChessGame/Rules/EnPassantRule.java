@@ -34,9 +34,9 @@ public class EnPassantRule implements MoveRule
         candidates = candidates.stream().filter(p -> {
             var x = p.x(); var y = p.y();
             var prev = board.prevBoard().board();
-
             return prev[x][y] == null // the piece has just moved
                     && prev[x][y + yDir] == null // the piece has not moved one square y
+                    && prev[x][y + (2*yDir)] != null
                     && prev[x][y + (2*yDir)].PieceType() == PieceType.PAWN; // the piece has moved two squares up the board
         }).toList();
 

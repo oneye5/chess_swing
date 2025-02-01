@@ -23,7 +23,7 @@ public enum Renderer
 
     Renderer()
     {
-        mainWindow = new MainWindow(600,600, graphics ->
+        mainWindow = new MainWindow(900,720, graphics ->
         {
             for(var r : renderables)
                 graphics.drawImage(r.renderableGetImage().getImage(),
