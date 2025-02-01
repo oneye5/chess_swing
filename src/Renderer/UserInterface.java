@@ -1,10 +1,11 @@
 package Renderer;
 
+import ChessEngine.MoveSearchAlgorithms.BfsBruteForce;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.util.function.Consumer;
 
 public enum UserInterface
 {
@@ -13,7 +14,13 @@ public enum UserInterface
     private final JPanel sidePanel;
     private int depth = 3; // default engine depth
     private String searchAlgorithm = "BFS"; // default engine algorithm
-    private Runnable UIChanged = ()->System.out.println("UI changed runnable (UserInterface.java) has not been set");
+
+    private Runnable UIChanged = ()->System.out.println("runnable (UserInterface.java) has not been set");
+    private Runnable makeMovePressed = ()->System.out.println("runnable (UserInterface.java) has not been set");
+    private Runnable findMovePressed = ()->System.out.println("runnable (UserInterface.java) has not been set");
+    private Runnable newGamePressed = ()->System.out.println("runnable (UserInterface.java) has not been set");
+
+    String[] algorithms = {BfsBruteForce.class.toString()}; // search algorithms
 
     UserInterface()
     {
@@ -43,7 +50,6 @@ public enum UserInterface
         JPanel algorithmPanel = new JPanel();
         algorithmPanel.setLayout(new BoxLayout(algorithmPanel, BoxLayout.Y_AXIS));
         JLabel algorithmLabel = new JLabel("Search Algorithm:");
-        String[] algorithms = {"BFS", "A*"};
         JComboBox<String> algorithmComboBox = new JComboBox<>(algorithms);
 
         algorithmComboBox.addActionListener(e -> {
@@ -58,6 +64,10 @@ public enum UserInterface
         JButton newGameButton = new JButton("New Game");
         JButton findBestMoveButton = new JButton("Find Best Move");
         JButton makeMoveButton = new JButton("Make Move");
+
+        newGameButton.addActionListener(e -> newGamePressed.run());
+        findBestMoveButton.addActionListener(e -> findMovePressed.run());
+        makeMoveButton.addActionListener(e -> makeMovePressed.run());
 
         // add components to side panel with spacing
         sidePanel.add(depthPanel);
@@ -87,9 +97,14 @@ public enum UserInterface
         makeMoveButton.setAlignmentX(Component.LEFT_ALIGNMENT);
     }
 
+
+    public String getAlgorithm() {return searchAlgorithm;}
     public int getDepth() {return depth;}
     public String getSearchAlgorithm() {return searchAlgorithm;}
     public JPanel getPanel() {return sidePanel;}
 
-    public void setUIChanged(Runnable UIChanged) {this.UIChanged = UIChanged;}
+    public void setOnUIChangedRunnable(Runnable UIChanged) {this.UIChanged = UIChanged;}
+    public void setOnNewGamePressed(Runnable pressed)      {this.newGamePressed = pressed;}
+    public void setOnFindMovePressed(Runnable pressed)     {this.findMovePressed = pressed;}
+    public void setOnMakeMovePressed(Runnable pressed)     {this.makeMovePressed = pressed;}
 }

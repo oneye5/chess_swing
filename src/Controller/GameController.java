@@ -24,9 +24,26 @@ public class GameController implements MouseListener
         game = new ChessGame();
         updateVisuals();
         Renderer.INSTANCE.addMouseListener(this);
-        var e = new ChessEngine();
-        e.findBestMove(game.getBoard());
-        UserInterface.INSTANCE.setUIChanged(this::tickUI);
+
+        // assign behaviours to the UI
+        UserInterface.INSTANCE.setOnUIChangedRunnable(this::tickUI);
+
+        UserInterface.INSTANCE.setOnNewGamePressed(()->{
+            game = new ChessGame();
+            updateVisuals();
+        });
+
+        UserInterface.INSTANCE.setOnFindMovePressed(()->{
+            updateVisuals();
+            new VisualEngineEvaluation(game);
+        });
+
+        UserInterface.INSTANCE.setOnMakeMovePressed(()->{
+            var move = new ChessEngine().findBestMove(game.getBoard());
+            game.selectPiece(move[0],move[1]);
+            game.moveSelectedPiece(move[2],move[3]);
+            updateVisuals();
+        });
     }
 
     @Override
