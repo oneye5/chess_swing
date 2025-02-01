@@ -17,7 +17,7 @@ import java.awt.event.MouseListener;
 public class GameController implements MouseListener
 {
     private ChessGame game;
-    private float squareSize = 40.0f;  // match the square size from VisualChessBoard
+    public static float squareSize = 80.0f;
 
     public GameController()
     {
