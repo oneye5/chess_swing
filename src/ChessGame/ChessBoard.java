@@ -24,7 +24,7 @@ public record ChessBoard (ChessPiece[][] board,ChessBoard prevBoard, Boolean Whi
     public List<byte[]> getAllMoves()
     {
         return getTurnAppropriatePieces()
-                .parallelStream()
+                .stream()
                 .flatMap(p->
                         p.getPossibleMoves(this)
                                 .stream()

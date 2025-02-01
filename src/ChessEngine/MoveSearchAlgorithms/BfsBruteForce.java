@@ -32,8 +32,10 @@ public class BfsBruteForce implements MoveSearchAlgorithm
 
             System.out.println("searching breadth at depth: " + currentDepth);
 
-            for (TreeNode node : currentBreadth)
-                nextBreadth.addAll(node.getChildren());
+            var allChildren = currentBreadth.parallelStream() // parallel stream cutts execution time in half compared to simple for loop
+                    .flatMap(x-> x.getChildren().stream())
+                    .toList();
+            nextBreadth.addAll(allChildren);
         }
 
         System.out.println("finnished tree discovery, starting sort for best move, selecting from " + nextBreadth.size() + " leaf nodes");
