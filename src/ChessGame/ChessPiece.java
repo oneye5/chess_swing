@@ -46,12 +46,12 @@ class MoveFinder
                     .filter(m->m[0] < 8 && m[1] < 8)
                     .toList();
         }
-        else
-        {
+        else // backup brute force over all squares
             for (byte x = 0; x < 8; x++)
                 for (byte y = 0; y < 8; y++)
                     possibleMoves.add(new byte[]{x, y});
-        }
+
+
 
         return possibleMoves.stream()
                     .filter(move->p.PieceType().getMoveRule().isValidMove(board,p,move[0],move[1]))

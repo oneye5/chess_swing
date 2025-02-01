@@ -6,6 +6,8 @@ import ChessEngine.MoveSearchAlgorithms.BfsBruteForce;
 import ChessEngine.MoveSearchAlgorithms.MoveSearchAlgorithm;
 import ChessGame.ChessBoard;
 
+import java.util.Timer;
+
 public class ChessEngine
 {
     public static Integer depth = 3;
@@ -15,9 +17,16 @@ public class ChessEngine
     public void setSearchAlgorithm(MoveSearchAlgorithm searchAlgorithm) {this.searchAlgorithm = searchAlgorithm;}
     public byte[] findBestMove(ChessBoard board)
     {
+       long startTime = System.currentTimeMillis();
+
         if(board.getAllMoves().size() == 0)
             return null;
 
-        return searchAlgorithm.findBestMove(board);
+        var move =  searchAlgorithm.findBestMove(board);
+
+        long finishTime = System.currentTimeMillis();
+        long elapsedTime = finishTime - startTime;
+        System.out.println("elapsed move search time : " + elapsedTime);
+        return move;
     }
 }
