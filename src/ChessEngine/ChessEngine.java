@@ -1,9 +1,6 @@
 package ChessEngine;
 
-import ChessEngine.MoveSearchAlgorithms.AStarMoveSearch;
-import ChessEngine.MoveSearchAlgorithms.BeamSearch;
-import ChessEngine.MoveSearchAlgorithms.BfsBruteForce;
-import ChessEngine.MoveSearchAlgorithms.MoveSearchAlgorithm;
+import ChessEngine.MoveSearchAlgorithms.*;
 import ChessGame.ChessBoard;
 
 import java.util.Timer;
@@ -11,7 +8,7 @@ import java.util.Timer;
 public class ChessEngine
 {
     public static Integer depth = 3;
-    private MoveSearchAlgorithm searchAlgorithm = new BfsBruteForce(()->depth);
+    private MoveSearchAlgorithm searchAlgorithm = new BfsWPruning(()->depth);
          //new AStarMoveSearch(10,2496*10);
            //new BeamSearch(5,0.75f);
     public void setSearchAlgorithm(MoveSearchAlgorithm searchAlgorithm) {this.searchAlgorithm = searchAlgorithm;}
