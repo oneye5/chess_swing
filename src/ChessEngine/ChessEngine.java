@@ -7,8 +7,8 @@ import java.util.Timer;
 
 public class ChessEngine
 {
-    public static Integer depth = 3;
-    private MoveSearchAlgorithm searchAlgorithm = new BfsWPruning(()->depth);
+    public static Integer depth = 4;
+    private MoveSearchAlgorithm searchAlgorithm = new StandaloneMinimax(()->depth);
          //new AStarMoveSearch(10,2496*10);
            //new BeamSearch(5,0.75f);
     public void setSearchAlgorithm(MoveSearchAlgorithm searchAlgorithm) {this.searchAlgorithm = searchAlgorithm;}

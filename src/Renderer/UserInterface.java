@@ -13,7 +13,7 @@ public enum UserInterface {
     INSTANCE;
 
     private final JPanel sidePanel;
-    private int depth = 3; // default engine depth
+    private int depth = 4; // default engine depth
     private String searchAlgorithm = "BFS"; // default engine algorithm
 
     private Runnable UIChanged = ()->System.out.println("runnable (UserInterface.java) has not been set");

@@ -17,7 +17,7 @@ import java.awt.event.MouseListener;
 public class GameController implements MouseListener
 {
     private Boolean hasReportedWin = false;
-    private ChessGame game;
+    public ChessGame game;
     public static float squareSize = 80.0f;
 
     public GameController()

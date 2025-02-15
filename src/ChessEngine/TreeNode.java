@@ -12,8 +12,7 @@ public class TreeNode implements Comparable<TreeNode>
     public TreeNode parent;
     public ChessBoard board;
     public byte[] precedingMove;
-
-    private List<TreeNode> children = null;
+    private boolean hasEvaluatedChildren = false;
 
     public static TreeNode root(ChessBoard board) {return new TreeNode(null,board,null, BoardHeuristic.PERFORMANT.getHeuristic(board));}
     public float getContextDependantHeuristic(){return board.WhitesTurn() ? nodeHeuristic : 1.0f - nodeHeuristic;}
@@ -32,11 +31,8 @@ public class TreeNode implements Comparable<TreeNode>
     }
     public List<TreeNode> getChildren()
     {
-        if (this.children != null)
-            return this.children;
-        var children = board.getAllMoves().stream().map(x->new TreeNode(this,x)).toList();
-        this.children = children;
-        return children;
+        hasEvaluatedChildren = true;
+        return board.getAllMoves().stream().map(x->new TreeNode(this,x)).toList();
     }
 
     // utility methods
@@ -77,7 +73,7 @@ public class TreeNode implements Comparable<TreeNode>
             nodeHeuristic = BoardHeuristic.PERFORMANT.getHeuristic(board);
         return nodeHeuristic;
     }
-    public boolean hasEvaluatedChildren() {return this.children != null;}
+    public boolean hasEvaluatedChildren() {return hasEvaluatedChildren;}
     public int compareTo(TreeNode o) {return Float.compare(getContextDependantHeuristic(), o.getContextDependantHeuristic());}
     public String toString() {return "node h:" + nodeHeuristic;}
 }
