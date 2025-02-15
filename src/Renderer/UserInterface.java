@@ -1,6 +1,6 @@
 package Renderer;
 
-import ChessEngine.MoveSearchAlgorithms.BfsBruteForce;
+import ChessEngine.MoveSearchAlgorithms.StandaloneMinimax;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -21,7 +21,7 @@ public enum UserInterface {
     private Runnable findMovePressed = ()->System.out.println("runnable (UserInterface.java) has not been set");
     private Runnable newGamePressed = ()->System.out.println("runnable (UserInterface.java) has not been set");
 
-    String[] algorithms = {BfsBruteForce.class.toString()}; // search algorithms
+    String[] algorithms = {StandaloneMinimax.class.toString()}; // search algorithms
 
     UserInterface() {
         sidePanel = new JPanel();
