@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-
+record Pair<X,Y>(X x, Y y){};
 public class Minimax
 {
     private static float minimax(TreeNode node, int depth, boolean prepassMode)
@@ -52,7 +52,7 @@ public class Minimax
         return bestMove;
     }
 
-    record Pair<X,Y>(X x, Y y){};
+
 
     public static TreeNode findMove(TreeNode root, int depth) {return findMove(root, depth, false);}
     public static TreeNode parallelFindMove(TreeNode root, int depth, boolean prepassMode)
@@ -61,7 +61,7 @@ public class Minimax
         boolean isWhiteTurn = root.board.WhitesTurn();
 
         var moveValuePairs = moves.parallelStream()
-                .map(move-> new Pair<TreeNode,Float>(move,minimax(move,depth,prepassMode))).toList();
+                .map(move-> new Pair<TreeNode,Float>(move,minimax(move,depth-1,prepassMode))).toList();
 
         // find  the best move based on the value node pairs
         var best = moveValuePairs.get(0);
