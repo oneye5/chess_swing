@@ -3,6 +3,14 @@ package ChessEngine.BoardEvaluationHeuristics;
 import ChessEngine.BoardEvaluationHeuristics.HeuristicFactors.*;
 import ChessGame.ChessBoard;
 
+/**
+ * BoardHeuristic
+ * Defines what heuristic factors to use and their weightings,
+ * may have multiple profiles.
+ *
+ * @author Owan Lazic
+ */
+
 public enum BoardHeuristic
 {   // new MoveCountFactor(0.4f)  this factor has been omitted due to its computational cost
     PERFORMANT(new MaterialFactor(1.0f), new CentrePositioning(0.2f)),

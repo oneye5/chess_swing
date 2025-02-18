@@ -5,6 +5,13 @@ import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
 import ChessGame.PieceType;
 
+/**
+ * PawnStructureFactor
+ * Returns a higher score when pawns are defended by other pawns.
+ *
+ * @author Owan Lazic
+ */
+
 public class PawnStructureFactor extends HeuristicFactor
 {
     public PawnStructureFactor(float weight){super(weight);}

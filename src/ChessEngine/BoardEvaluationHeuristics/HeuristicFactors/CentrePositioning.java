@@ -5,6 +5,13 @@ import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
 import java.util.List;
 
+/**
+ * CentrePositioning
+ * The more central pieces the higher the score
+ *
+ * @author Owan Lazic
+ */
+
 public class CentrePositioning extends HeuristicFactor
 {
     public CentrePositioning(float weight) {super(weight);}

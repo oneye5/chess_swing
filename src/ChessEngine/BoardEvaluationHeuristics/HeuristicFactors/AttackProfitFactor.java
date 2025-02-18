@@ -5,8 +5,11 @@ import ChessGame.ChessPiece;
 import ChessGame.PieceType;
 
 /**
+ * AttackProfitFactor
  * This is essentially incentivizing less valuable pieces to take more valuable pieces, known as
  * MVV-LVA (most valuable victim, least valuable attacker)
+ *
+ * @author Owan Lazic
  */
 
 public class AttackProfitFactor extends HeuristicFactor

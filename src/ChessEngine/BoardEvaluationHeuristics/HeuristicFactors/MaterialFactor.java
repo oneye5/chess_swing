@@ -3,6 +3,13 @@ import ChessEngine.BoardEvaluationHeuristics.HeuristicFactor;
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
 
+/**
+ * MaterialFactor
+ * Returns the material ratio between black and white pieces.
+ *
+ * @author Owan Lazic
+ */
+
 public class MaterialFactor extends HeuristicFactor
 {
     public MaterialFactor(float weight){super(weight);}

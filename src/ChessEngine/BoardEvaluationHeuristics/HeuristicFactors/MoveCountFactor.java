@@ -3,7 +3,13 @@ import ChessEngine.BoardEvaluationHeuristics.HeuristicFactor;
 import ChessGame.ChessBoard;
 import ChessGame.ChessPiece;
 
-//this is very slow!
+/**
+ * MoveCountFactor
+ * Counts the number of available moves for both black and white pieces.
+ * It is important to note that this operation is very slow!
+ *
+ * @author Owan Lazic
+ */
 public class MoveCountFactor extends HeuristicFactor
 {
     public MoveCountFactor(float weight){super(weight);}

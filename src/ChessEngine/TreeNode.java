@@ -6,6 +6,13 @@ import ChessGame.ChessBoard;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TreeNode
+ * This class is responsible for storing the tree representation of possible moves for use in move search algorithms.
+ * It contains relevant utility methods needed for traversing, using and constructing the move tree in move search algorithms.
+ *
+ * @author Owan Lazic
+ */
 public class TreeNode implements Comparable<TreeNode>
 {
     private Float nodeHeuristic = null;
@@ -14,8 +21,11 @@ public class TreeNode implements Comparable<TreeNode>
     public byte[] precedingMove;
     private boolean hasEvaluatedChildren = false;
 
+    // constructs a 'root' TreeNode from a chess board
     public static TreeNode root(ChessBoard board) {return new TreeNode(null,board,null, BoardHeuristic.PERFORMANT.getHeuristic(board));}
+
     public float getContextDependantHeuristic(){return board.WhitesTurn() ? nodeHeuristic : 1.0f - nodeHeuristic;}
+
     private TreeNode(TreeNode parent, ChessBoard board, byte[] move, float nodeHeuristic)
     {
         this.parent = parent;
@@ -23,12 +33,14 @@ public class TreeNode implements Comparable<TreeNode>
         this.precedingMove = move;
         this.nodeHeuristic = nodeHeuristic;
     }
+
     public TreeNode(TreeNode parent, byte[] move)
     {
         this.parent = parent;
         this.precedingMove = move;
         this.board = parent.board.newBoardWithMove(move);
     }
+
     public List<TreeNode> getChildren()
     {
         hasEvaluatedChildren = true;
@@ -36,7 +48,6 @@ public class TreeNode implements Comparable<TreeNode>
     }
 
     // utility methods
-
     public int getDepth()
     {
         if (parent == null)
@@ -49,6 +60,7 @@ public class TreeNode implements Comparable<TreeNode>
             return this;
         return parent.getRoot();
     }
+
     public List<TreeNode> getPathToRoot() {return getPathToRoot(new ArrayList<TreeNode>());} // public version of recursive method below
     private List<TreeNode> getPathToRoot(List<TreeNode> path)
     {
@@ -57,6 +69,7 @@ public class TreeNode implements Comparable<TreeNode>
         path.add(this);
         return parent.getPathToRoot(path);
     }
+
     public void printBoardsToRoot()
     {
         var current = this;
@@ -67,12 +80,14 @@ public class TreeNode implements Comparable<TreeNode>
             current = current.parent;
         }
     }
+
     public float getNodeHeuristic()
     {
         if (nodeHeuristic == null)
             nodeHeuristic = BoardHeuristic.PERFORMANT.getHeuristic(board);
         return nodeHeuristic;
     }
+
     public boolean hasEvaluatedChildren() {return hasEvaluatedChildren;}
     public int compareTo(TreeNode o) {return Float.compare(getContextDependantHeuristic(), o.getContextDependantHeuristic());}
     public String toString() {return "node h:" + nodeHeuristic;}

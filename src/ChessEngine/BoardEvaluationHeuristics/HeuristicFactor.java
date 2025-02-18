@@ -1,6 +1,12 @@
 package ChessEngine.BoardEvaluationHeuristics;
 
 import ChessGame.ChessBoard;
+/**
+ * HeuristicFactor
+ * All heuristic factors implement this, used in BoardHeuristic
+ *
+ * @author Owan Lazic
+ */
 
 public abstract class HeuristicFactor
 {

@@ -13,8 +13,7 @@ public class Main
     {
         var controller = new GameController();
         ChessEngine x = new ChessEngine();
-        x.findBestMove(controller.game.getBoard());
-        exit(1);
-        //while(true){controller.tick();}
+
+        while(true){controller.tick();}
     }
 }

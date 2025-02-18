@@ -8,9 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Minimax
+ * This contains the main implementations of the minimax algorithm, it allows for a pre-pass
+ * where tree exploration is done separate to the actual selection of the best move.
+ *
+ * @author Owan Lazic
+ */
+
 record Pair<X,Y>(X x, Y y){};
 public class Minimax
 {
+    // main recursive implementation
     private static float minimax(TreeNode node, int depth, boolean prepassMode)
     {
         float value;
@@ -51,10 +60,9 @@ public class Minimax
 
         return bestMove;
     }
-
-
-
     public static TreeNode findMove(TreeNode root, int depth) {return findMove(root, depth, false);}
+
+    // parallel version of the above implementation of findMove
     public static TreeNode parallelFindMove(TreeNode root, int depth, boolean prepassMode)
     {
         List<TreeNode> moves = root.getChildren();
@@ -66,11 +74,20 @@ public class Minimax
         // find  the best move based on the value node pairs
         var best = moveValuePairs.get(0);
         for(var pair : moveValuePairs)
-            if (pair.y() > best.y())
-                best = pair;
+        {
+            if (root.board.WhitesTurn())
+            {
+                if (pair.y() > best.y())
+                    best = pair;
+            }
+            else
+            {
+                if (pair.y() < best.y())
+                    best = pair;
+            }
+        }
 
         return best.x();
     }
-
     public static TreeNode parallelFindMove(TreeNode root, int depth) {return parallelFindMove(root, depth, false);}
 }

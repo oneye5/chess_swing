@@ -3,6 +3,13 @@ package ChessEngine.MoveSearchAlgorithms;
 import ChessEngine.TreeNode;
 import ChessGame.ChessBoard;
 
+/**
+ * MoveSearchAlgorithm
+ * Provides a layer of abstraction between ChessEngine, and the actual move search algorithm
+ *
+ * @author Owan Lazic
+ */
+
 public interface MoveSearchAlgorithm
 {
     public byte[] findBestMove(ChessBoard currentBoard);

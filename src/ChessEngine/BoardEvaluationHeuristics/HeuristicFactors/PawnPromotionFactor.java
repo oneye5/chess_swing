@@ -9,6 +9,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * PawnPromotionFactor
+ * Returns a higher value when pawns on an open exist further up the board.
+ *
+ * @author Owan Lazic
+ */
+
 public class PawnPromotionFactor extends HeuristicFactor
 {
 
