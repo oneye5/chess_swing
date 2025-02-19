@@ -44,5 +44,8 @@ public enum Renderer
 
     public void addMouseListener(MouseListener listener) {mainWindow.getPanel().addMouseListener(listener);}
 
-    public void repaint() {mainWindow.getPanel().repaint();}
+    public void repaint()
+    {
+        mainWindow.getPanel().repaint();
+    }
 }

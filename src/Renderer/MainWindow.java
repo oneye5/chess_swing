@@ -35,6 +35,7 @@ class MainWindow
 
         frame.add(panel);
         frame.setVisible(true);
+
     }
 
 

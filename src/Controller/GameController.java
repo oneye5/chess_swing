@@ -78,9 +78,9 @@ public class GameController implements MouseListener
 
         if(!hasReportedWin && game.getBoard().getAllMoves().size() == 0)
             UserInterface.INSTANCE.onWin(!game.getBoard().WhitesTurn());
-    }
 
-    public void tick() {Renderer.INSTANCE.repaint();}
+        tick();
+    }
 
     public void actionTile(int x, int y)
     {
@@ -91,5 +91,6 @@ public class GameController implements MouseListener
         System.out.println( "current heuristic:" + BoardHeuristic.PERFORMANT.getHeuristic(game.getBoard()));
     }
 
+    public void tick() {Renderer.INSTANCE.repaint();}
     private void tickUI() {ChessEngine.depth = UserInterface.INSTANCE.getDepth();}
 }
