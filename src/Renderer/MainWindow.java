@@ -16,7 +16,11 @@ class MainWindow
     private final JPanel panel;
     public MainWindow(int width, int height, Consumer<Graphics> renderConsumer)
     {
-        JFrame frame = new JFrame("MAIN WINDOW");
+        JFrame frame = new JFrame("MAIN WINDOW"){
+            @Override
+            public boolean isDoubleBuffered() {return true;}
+        };
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
 

@@ -25,6 +25,7 @@ public enum UserInterface {
 
     UserInterface() {
         sidePanel = new JPanel();
+
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

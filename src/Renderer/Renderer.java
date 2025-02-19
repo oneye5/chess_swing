@@ -1,5 +1,6 @@
 package Renderer;
 
+import java.awt.*;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.PriorityQueue;
@@ -25,6 +26,7 @@ public enum Renderer
     {
         mainWindow = new MainWindow(1100,900, graphics ->
         {
+            graphics.setPaintMode();
             for(var r : renderables)
                 graphics.drawImage(r.renderableGetImage().getImage(),
                         Math.round(r.renderableGetX()),
@@ -40,7 +42,10 @@ public enum Renderer
 
     public void removeRenderable(Renderable... r) {renderables.removeAll(Arrays.stream(r).toList());}
 
-    public void clearRenderables() {renderables.clear();}
+    public void clearRenderables()
+    {
+        renderables.clear();
+    }
 
     public void addMouseListener(MouseListener listener) {mainWindow.getPanel().addMouseListener(listener);}
 

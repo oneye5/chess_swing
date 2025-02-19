@@ -4,7 +4,9 @@ import ChessEngine.BoardEvaluationHeuristics.BoardHeuristic;
 import ChessEngine.ChessEngine;
 import ChessGame.*;
 import Renderer.*;
+import Renderer.Renderer;
 
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -23,31 +25,35 @@ public class GameController implements MouseListener
     public GameController()
     {
         game = new ChessGame();
-        updateVisuals();
-        Renderer.INSTANCE.addMouseListener(this);
 
-        // assign behaviours to the UI
-        UserInterface.INSTANCE.setOnUIChangedRunnable(this::tickUI);
-
-        UserInterface.INSTANCE.setOnNewGamePressed(()->{
-            game = new ChessGame();
-            hasReportedWin = false;
+        SwingUtilities.invokeLater(()->
+        {
             updateVisuals();
-        });
+            Renderer.INSTANCE.addMouseListener(this);
 
-        UserInterface.INSTANCE.setOnFindMovePressed(()->{
-            updateVisuals();
-            new VisualEngineEvaluation(game);
-        });
+            // assign behaviours to the UI
+            UserInterface.INSTANCE.setOnUIChangedRunnable(this::tickUI);
 
-        UserInterface.INSTANCE.setOnMakeMovePressed(()->{
-            var move = new ChessEngine().findBestMove(game.getBoard());
-            if(move == null)
-                return;
+            UserInterface.INSTANCE.setOnNewGamePressed(()->{
+                game = new ChessGame();
+                hasReportedWin = false;
+                updateVisuals();
+            });
 
-            game.selectPiece(move[0],move[1]);
-            game.moveSelectedPiece(move[2],move[3]);
-            updateVisuals();
+            UserInterface.INSTANCE.setOnFindMovePressed(()->{
+                updateVisuals();
+                new VisualEngineEvaluation(game);
+            });
+
+            UserInterface.INSTANCE.setOnMakeMovePressed(()->{
+                var move = new ChessEngine().findBestMove(game.getBoard());
+                if(move == null)
+                    return;
+
+                game.selectPiece(move[0],move[1]);
+                game.moveSelectedPiece(move[2],move[3]);
+                updateVisuals();
+            });
         });
     }
 
@@ -91,6 +97,10 @@ public class GameController implements MouseListener
         System.out.println( "current heuristic:" + BoardHeuristic.PERFORMANT.getHeuristic(game.getBoard()));
     }
 
-    public void tick() {Renderer.INSTANCE.repaint();}
+    public void tick()
+    {
+        SwingUtilities.invokeLater(Renderer.INSTANCE::repaint);
+
+    }
     private void tickUI() {ChessEngine.depth = UserInterface.INSTANCE.getDepth();}
 }
