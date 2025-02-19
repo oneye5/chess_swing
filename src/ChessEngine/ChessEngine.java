@@ -13,7 +13,7 @@ import ChessGame.ChessBoard;
 public class ChessEngine
 {
     public static Integer depth = 4;
-    private MoveSearchAlgorithm searchAlgorithm = new StandaloneMinimax(()->depth); // the selected move search algorithm
+    private MoveSearchAlgorithm searchAlgorithm = new BfsPruningMinimax(()->depth); //new StandaloneMinimax(()->depth); // the selected move search algorithm
 
     public void setSearchAlgorithm(MoveSearchAlgorithm searchAlgorithm) {this.searchAlgorithm = searchAlgorithm;}
     public byte[] findBestMove(ChessBoard board)

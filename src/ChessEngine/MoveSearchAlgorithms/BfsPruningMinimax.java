@@ -42,7 +42,7 @@ public class BfsPruningMinimax implements MoveSearchAlgorithm
 
             System.out.println("searching breadth at depth: " + currentDepth);
 
-            var allChildren = currentBreadth.stream() // parallel stream cutts execution time in half compared to simple for loop
+            var allChildren = currentBreadth.stream() // parallel stream cuts execution time in half compared to simple for loop
                     .flatMap(x-> x.getChildren()
                             .stream()
                             .filter(y->
