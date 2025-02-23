@@ -29,7 +29,7 @@ public enum UserInterface {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // depth Control
+        // algorithm search depth control
         JPanel depthPanel = new JPanel();
         depthPanel.setLayout(new BoxLayout(depthPanel, BoxLayout.Y_AXIS));
         JLabel depthLabel = new JLabel("Depth: " + depth);
@@ -38,7 +38,7 @@ public enum UserInterface {
         depthPanel.add(depthLabel);
         depthPanel.add(depthSlider);
 
-        // search Algorithm Dropdown
+        // search dlgorithm dropdown
         JPanel algorithmPanel = new JPanel();
         algorithmPanel.setLayout(new BoxLayout(algorithmPanel, BoxLayout.Y_AXIS));
         JLabel algorithmLabel = new JLabel("Search Algorithm:");
@@ -52,7 +52,7 @@ public enum UserInterface {
         JButton findBestMoveButton = new JButton("Find Best Move");
         JButton makeMoveButton = new JButton("Make Move");
 
-        // ADD EVENT LISTENERS
+        // event listeners for UI elements
         depthSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 depth = depthSlider.getValue();
@@ -60,17 +60,20 @@ public enum UserInterface {
                 UIChanged.run();
             }
         });
+
         algorithmComboBox.addActionListener(e -> {
             searchAlgorithm = (String) algorithmComboBox.getSelectedItem();
             UIChanged.run();
         });
+
         newGameButton.addActionListener(e -> newGamePressed.run());
+
         findBestMoveButton.addActionListener(e -> findMovePressed.run());
+
         makeMoveButton.addActionListener(e -> makeMovePressed.run());
 
         // Set fixed width for all components
         Dimension fixedSize = new Dimension(180, 30);
-
         depthPanel.setMaximumSize(new Dimension(180, 60));
         algorithmPanel.setMaximumSize(new Dimension(180, 60));
 
