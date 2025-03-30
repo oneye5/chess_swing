@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/fdff5846-3349-492d-9a04-641ec5b9a06b)
+
 # How to run
 - Download and unzip the project
 - Navigate to chess_swing/builds
