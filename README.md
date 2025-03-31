@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/fdff5846-3349-492d-9a04-641ec5b9a06b" alt="Alt Text" width="300" height="300">
+<img src="https://github.com/user-attachments/assets/fdff5846-3349-492d-9a04-641ec5b9a06b" alt="Alt Text" width="329" height="270">
 
 # How to run
 - Download and unzip the project
